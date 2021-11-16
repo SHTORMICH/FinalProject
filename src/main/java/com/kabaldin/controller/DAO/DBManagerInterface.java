@@ -7,9 +7,13 @@ import java.util.List;
 
 public interface DBManagerInterface {
 // User
-    public boolean registration(String login, String email, String password, String first_name, String last_name, int phone_number);
+    public boolean registration(String login, String email, String password, String first_name, String last_name, String phone_number);
 
     public User logIn(String login, String password);
+
+    public User.AccessLevel getUserByLoginAndPassword(String login, String password);
+
+    public boolean userIsExist(String login, String password);
 
     public User getUsersByLogin(String login);
 
@@ -17,7 +21,7 @@ public interface DBManagerInterface {
 
     public List<User> getAllUsers();
 
-    public boolean changeUsersInfo(String login, String email, String password, String firstName, String lastName, int phoneNumber);
+    public boolean changeUsersInfo(String login, String email, String password, String firstName, String lastName, String phoneNumber);
 
     public boolean deleteUserByLogin(String login);
 

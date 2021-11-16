@@ -1,6 +1,14 @@
 package com.kabaldin.controller.DAO.entity;
 
+import com.kabaldin.controller.DAO.DBManager;
+
+import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class User {
 
@@ -10,9 +18,57 @@ public class User {
     private String role;
     private String firstName;
     private String lastName;
-    private int phoneNumber;
+    private String phoneNumber;
     private int account;
     private int roleId;
+    private Role enumRole;
+
+    public User() {
+    }
+
+    public User(String login, String email, String password, String firstName, String lastName, String phoneNumber) {
+        if (matchLogin(login) && matchEmail(email) && matchPassword(password)) {
+            DBManager.getInstance().registration(login, email, passwordHash(password), firstName, lastName, phoneNumber);
+        } else {
+            throw new RuntimeException("Incorrect input login or email or password;");
+        }
+    }
+
+    private boolean matchLogin(String login) {
+        String regex = "^[a-z0-9_-]{3,45}$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(login);
+        return matcher.matches();
+    }
+
+    private boolean matchEmail(String email) {
+        String regex = "^([a-z0-9_.-]+)@([a-z.-]+).([a-z.]{2,6})$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
+    }
+
+    private boolean matchPassword(String password) {
+        String regex = "^[a-z0-9_-]{6,45}$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(password);
+        return matcher.matches();
+    }
+
+    private String passwordHash(String password) {
+        String md5Hash = null;
+        if (password == null) {
+            return null;
+        }
+        try {
+            MessageDigest digest = MessageDigest.getInstance("MD5");
+            digest.update(password.getBytes(StandardCharsets.UTF_8), 0, password.length());
+            md5Hash = new BigInteger(1, digest.digest()).toString(45);
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException("Hashing password work incorrect!", e);
+        }
+        return md5Hash;
+    }
 
     public String getLogin() {
         return login;
@@ -62,11 +118,11 @@ public class User {
         this.lastName = lastName;
     }
 
-    public int getPhoneNumber() {
+    public String getPhoneNumber() {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(int phoneNumber) {
+    public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
@@ -84,6 +140,14 @@ public class User {
 
     public void setRoleId(int roleId) {
         this.roleId = roleId;
+    }
+
+    public Role getEnumRole() {
+        return enumRole;
+    }
+
+    public void setEnumRole(Role enumRole) {
+        this.enumRole = enumRole;
     }
 
     @Override
@@ -112,7 +176,12 @@ public class User {
                 ((role == null) ? 0 : role.hashCode()) +
                 ((firstName == null) ? 0 : firstName.hashCode()) +
                 ((lastName == null) ? 0 : lastName.hashCode()) +
-                phoneNumber + account + roleId;
+                ((phoneNumber == null) ? 0 : phoneNumber.hashCode())
+                + account + roleId;
         return result;
+    }
+
+    public enum AccessLevel {
+        MANAGE, MASTER, USER
     }
 }

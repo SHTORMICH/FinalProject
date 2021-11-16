@@ -8,6 +8,7 @@ import static com.kabaldin.controller.DAO.SQLQuery.FeedbackQuery.*;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +16,8 @@ import java.util.Properties;
 import java.util.logging.Logger;
 
 public class DBManager implements DBManagerInterface{
-    public Connection connection;
+    private static Connection connection;
+    private static DBManager dbManager;
     private final Logger logger = Logger.getLogger(DBManager.class.getName());
 
     private DBManager() {
@@ -27,9 +29,15 @@ public class DBManager implements DBManagerInterface{
     }
 
     public Connection getConnection() throws SQLException {
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
         Properties prop = new Properties();
-        try (FileInputStream fileInputStream = new FileInputStream("accessMySql.properties")) {
-            prop.load(fileInputStream);
+
+        try (InputStream resource = getClass().getClassLoader().getResourceAsStream("accessMySql.properties");) {
+            prop.load(resource);
         } catch (IOException e) {
             logger.warning("Problem with load properties");
             return null;
@@ -38,15 +46,22 @@ public class DBManager implements DBManagerInterface{
         return DriverManager.getConnection(url);
     }
 
+    public static DBManager getInstance() {
+        if (dbManager == null) {
+            dbManager = new DBManager();
+        }
+        return dbManager;
+    }
+
     @Override
-    public boolean registration(String login, String email, String password, String firstName, String lastName, int phoneNumber) {
+    public boolean registration(String login, String email, String password, String firstName, String lastName, String phoneNumber) {
         try (PreparedStatement ps = connection.prepareStatement(INSERT_USER)) {
             ps.setString(1, login);
             ps.setString(2, email);
             ps.setString(3, password);
             ps.setString(4, firstName);
             ps.setString(5, lastName);
-            ps.setInt(6, phoneNumber);
+            ps.setString(6, phoneNumber);
             ps.executeUpdate();
             return true;
         } catch (SQLException e) {
@@ -61,6 +76,48 @@ public class DBManager implements DBManagerInterface{
     }
 
     @Override
+    public User.AccessLevel getUserByLoginAndPassword(String login, String password) {
+        User.AccessLevel userRole = User.AccessLevel.USER;;
+        try (PreparedStatement ps = connection.prepareStatement(SELECT_USER_BY_LOGIN_AND_PASSWORD)) {
+            ps.setString(1, login);
+            ps.setString(2, password);
+            try (ResultSet rs = ps.executeQuery()){
+                if (rs.getInt("role_id") == 1) {
+                    userRole = User.AccessLevel.MANAGE;
+                } else if (rs.getInt("role_id") == 2) {
+                    userRole = User.AccessLevel.MASTER;
+                } else {
+                    userRole = User.AccessLevel.USER;
+                }
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return userRole;
+    }
+
+    @Override
+    public boolean userIsExist(String login, String password) {
+        boolean result = false;
+        try (PreparedStatement ps = connection.prepareStatement(SELECT_ONE_USER_BY_LOGIN_AND_PASSWORD)) {
+            ps.setString(1, login);
+            ps.setString(2, password);
+            try (ResultSet rs = ps.executeQuery()){
+                if (rs.getString("login").equals(login) &&
+                        rs.getString("password").equals(password)) {
+                    result = true;
+                } else {
+                    result = false;
+                }
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return result;
+    }
+
+
+    @Override
     public User getUsersByLogin(String login) {
         User user = null;
         try (PreparedStatement ps = connection.prepareStatement(SELECT_USER_BY_LOGIN)) {
@@ -71,7 +128,7 @@ public class DBManager implements DBManagerInterface{
                 user.setEmail(rs.getString("email"));
                 user.setFirstName(rs.getString("first_name"));
                 user.setLastName(rs.getString("last_name"));
-                user.setPhoneNumber(rs.getInt("phone_number"));
+                user.setPhoneNumber(rs.getString("phone_number"));
             }
         } catch (SQLException throwables) {
             logger.warning("User doesn't create! Parameter String login");
@@ -115,20 +172,20 @@ public class DBManager implements DBManagerInterface{
             user.setEmail(rs.getString("email"));
             user.setFirstName(rs.getString("first_name"));
             user.setLastName(rs.getString("last_name"));
-            user.setPhoneNumber(rs.getInt("phone_number"));
+            user.setPhoneNumber(rs.getString("phone_number"));
             res.add(user);
         }
         return res;
     }
 
     @Override
-    public boolean changeUsersInfo(String login, String email, String password, String firstName, String lastName, int phoneNumber) {
+    public boolean changeUsersInfo(String login, String email, String password, String firstName, String lastName, String phoneNumber) {
         try (PreparedStatement ps = connection.prepareStatement(UPDATE_USER_BY_LOGIN)) {
             ps.setString(1, email);
             ps.setString(2, password);
             ps.setString(3, firstName);
             ps.setString(4, lastName);
-            ps.setInt(5, phoneNumber);
+            ps.setString(5, phoneNumber);
             ps.setString(6, login);
             ps.executeUpdate();
             return true;
@@ -334,5 +391,10 @@ public class DBManager implements DBManagerInterface{
         return newRowId;
     }
 
+    public static void main(String[] args) {
+        DBManager dbManager = DBManager.getInstance();
+
+        dbManager.registration("Masha23" , "masha23@gmail.com", "12345", "Masha", "DAdah", "380001201020");
+    }
 
 }

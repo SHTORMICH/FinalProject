@@ -1,5 +1,10 @@
+<!DOCTYPE html>
 <html>
+<head>
+    <meta charset="UTF-8">
+    <title>User Form</title>
+</head>
 <body>
-<h2>Hello World!</h2>
+    Hello!
 </body>
 </html>

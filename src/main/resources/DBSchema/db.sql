@@ -4,7 +4,7 @@ SET SQL_SAFE_UPDATES = 0;
 -- Schema mydb
 -- -----------------------------------------------------
 CREATE SCHEMA IF NOT EXISTS `mydb` DEFAULT CHARACTER SET utf8 ;
-USE `db` ;
+USE `mydb` ;
 
 -- -----------------------------------------------------
 -- Table `mydb`.`role`
@@ -72,7 +72,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`payment_status` (
     PRIMARY KEY (`id`));
 
 INSERT INTO payment_status(id, payment_status) VALUES (default, 'Waiting for pay');
-INSERT INTO payment_status(id, payment_status) VALUES (default, 'Paid');
+INSERT INTO payment_status(id, payment_status) VALUES (default, 'Paied');
 INSERT INTO payment_status(id, payment_status) VALUES (default, 'Canceled');
 
 -- -----------------------------------------------------
@@ -83,6 +83,7 @@ DROP TABLE IF EXISTS `mydb`.`request` ;
 CREATE TABLE IF NOT EXISTS `mydb`.`request` (
     `id` INT NOT NULL AUTO_INCREMENT,
     `description` VARCHAR(10000) NOT NULL,
+    `master` VARCHAR(255) NOT NULL,
     `date` DATETIME NULL,
     `total_cost` DECIMAL(9) NOT NULL,
     `user_login` VARCHAR(45) NOT NULL,
@@ -116,7 +117,7 @@ DROP TABLE IF EXISTS `mydb`.`feedback` ;
 
 CREATE TABLE IF NOT EXISTS `mydb`.`feedback` (
     `id` INT NOT NULL AUTO_INCREMENT,
-    `name` VARCHAR(255) NOT NULL,
+    `master_name` VARCHAR(255) NOT NULL,
     `datatime` DATETIME NULL,
     `feedback` VARCHAR(10000) NULL,
     `rating` INT NOT NULL,

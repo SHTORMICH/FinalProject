@@ -5,6 +5,9 @@ public abstract class SQLQuery {
     static class UserQuery {
         public static final String INSERT_USER = "INSERT INTO user(login, email, password, first_name, last_name, phone_number, account, role_id) VALUES (?, ?, ?, ?, ?, ?, 0, 3);";
         public static final String SELECT_USER_BY_LOGIN = "SELECT * FROM user WHERE login=?;";
+        public static final String SELECT_USER_BY_LOGIN_AND_PASSWORD = "SELECT * FROM user WHERE login=?, password=?;";
+        public static final String SELECT_ONE_USER_BY_LOGIN_AND_PASSWORD = "SELECT COUNT(1) FROM user WHERE login=?, password=?;";
+
         public static final String SELECT_USER_BY_EMAIL = "SELECT * FROM user WHERE email=?;";
         public static final String SELECT_USER_BY_ROLE = "SELECT * FROM user WHERE role=?;";
         public static final String SELECT_ALL_USERS = "SELECT * FROM user;";
