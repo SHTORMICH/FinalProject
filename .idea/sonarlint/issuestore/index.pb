@@ -9,21 +9,9 @@ w
 Gsrc/main/java/com/kabaldin/controller/DAO/entity/CompilationStatus.java,3\6\369436f149476df6653faf2c8137b2d7a0c15c2a
 m
 =src/main/java/com/kabaldin/controller/DAO/entity/Request.java,4\b\4bf96e650465945914344d446fad4940d79e4d20
-J
-src/main/webapp/profil.jsp,7\9\7993d75ba23303798f606d3c7740c2504c507761
-P
- src/main/webapp/registration.jsp,d\d\dd51f7041d5a8d7bb17c79a85099a350e198ae09
 r
 Bsrc/main/java/com/kabaldin/controller/constants/PaymentStatus.java,9\d\9d236bf7db2d0333f96d3deea375c547eabf786c
 v
 Fsrc/main/java/com/kabaldin/controller/constants/CompilationStatus.java,d\0\d0b42ca83d3242e4760a3442587328f33e60140b
-q
-Asrc/main/java/com/kabaldin/controller/servlets/SingInServlet.java,2\0\2082a662afed01260491badb59d550e39aa12bc8
-H
-src/main/webapp/user.jsp,4\5\45e0788112ba00ec6d625a52d48d534e10d1de3c
-I
-src/main/webapp/admin.jsp,1\6\16c841072742f24edfb63d62f4da7ea207d6a9cd
 p
 @src/main/java/com/kabaldin/controller/constants/AccessLevel.java,9\2\9222cd0025cd91b4b854ca1fff626b323929150f
-w
-Gsrc/main/java/com/kabaldin/controller/listener/DBConnectionManager.java,a\3\a36cac2c61c00e232d10f66dcb7fa9830b12afbe
