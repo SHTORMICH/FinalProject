@@ -1,60 +1,38 @@
-package com.kabaldin.controller.DAO;
+package com.kabaldin.controller.DAO.connection;
 
-import com.kabaldin.controller.DAO.entity.Request;
-import com.kabaldin.controller.DAO.entity.User;
-
-import static com.kabaldin.controller.DAO.SQLQuery.UserQuery.*;
-import static com.kabaldin.controller.DAO.SQLQuery.RequestQuery.*;
-import static com.kabaldin.controller.DAO.SQLQuery.FeedbackQuery.*;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 import java.util.Properties;
-import java.util.logging.Logger;
+
 
 public class DBManager implements DBManagerInterface {
-    private static Connection connection;
-    private static DBManager dbManager;
-    private final Logger logger = Logger.getLogger(DBManager.class.getName());
 
-    private DBManager() {
-        try {
-            connection = getConnection();
-        } catch (SQLException e) {
-            logger.warning("Problem with connection!");
-        }
-    }
-
-    public Connection getConnection() throws SQLException {
+    static {
         try {
             Class.forName("com.mysql.jdbc.Driver");
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Can't find SQL Driver", e);
         }
-        Properties prop = new Properties();
+    }
 
-        try (InputStream resource = getClass().getClassLoader().getResourceAsStream("accessMySql.properties");) {
+    public static Connection getConnection() {
+        Properties prop = new Properties();
+        try (InputStream resource = DBManager.class.getClassLoader().getResourceAsStream("accessMySql.properties");) {
             prop.load(resource);
         } catch (IOException e) {
-            logger.warning("Problem with load properties");
-            return null;
+            throw new RuntimeException("IOException in getConnection method", e);
         }
         String url = prop.getProperty("connection.url");
-        return DriverManager.getConnection(url);
-    }
-
-    public static DBManager getInstance() {
-        if (dbManager == null) {
-            dbManager = new DBManager();
+        try {
+            return DriverManager.getConnection(url);
+        } catch (SQLException e) {
+            throw new RuntimeException("Can't create connection to DB ", e);
         }
-        return dbManager;
     }
 
-    @Override
+    /*@Override
     public boolean registration(String login, String email, String password, String firstName, String lastName, String phoneNumber) {
         try (PreparedStatement ps = connection.prepareStatement(INSERT_USER)) {
             ps.setString(1, login);
@@ -69,6 +47,35 @@ public class DBManager implements DBManagerInterface {
             logger.warning("Problem with registration(login, email, password, first_name, last_name, phone_number)");
             return false;
         }
+    }
+
+    public void saveUser(User user) {
+        if (matchLogin(user.getLogin()) && matchPassword(user.getPassword())) {
+            DBManager.getInstance().registration(user.getLogin(), user.getEmail(), user.getPassword(), user.getFirstName(), user.getLastName(), user.getPhoneNumber());
+        } else {
+            throw new RuntimeException("Incorrect input login or email or password;");
+        }
+    }
+
+    private boolean matchLogin(String login) {
+        String regex = "^[a-zA-Z0-9_-]{3,45}$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(login);
+        return matcher.matches();
+    }
+
+    private boolean matchEmail(String email) {
+        String regex = "^([a-z0-9_.-]+)@([a-z.-]+).([a-z.]{2,6})$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
+    }
+
+    private boolean matchPassword(String password) {
+        String regex = "^[a-z0-9_-]{6,45}$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(password);
+        return matcher.matches();
     }
 
     @Override
@@ -104,7 +111,7 @@ public class DBManager implements DBManagerInterface {
             throwables.printStackTrace();
         }
         return result;
-    }*/
+    }
 
 
     @Override
@@ -202,12 +209,16 @@ public class DBManager implements DBManagerInterface {
         }
     }
 
-    @Override
-    public int creatRequest(Request request, String description, int totalCost, String userLogin) {
+    public void saveRequest(Request request) {
+        DBManager.getInstance().creatRequest(request.getDescription(), request.getTotalCost(), request.getUserLogin());
+    }*/
+
+    /*@Override
+    public int creatRequest(String description, String totalCost, String userLogin) {
         int newRowId = 0;
         try (PreparedStatement ps = connection.prepareStatement(ADD_REQUEST, Statement.RETURN_GENERATED_KEYS)) {
             ps.setString(1, description);
-            ps.setInt(2, totalCost);
+            ps.setString(2, totalCost);
             ps.setString(3, userLogin);
             int affectedRows = ps.executeUpdate();
             if (affectedRows == 1) {
@@ -245,16 +256,16 @@ public class DBManager implements DBManagerInterface {
             request.setDescription(rs.getString("description"));
             request.setMaster(rs.getString("master"));
             request.setDate(rs.getString("date"));
-            request.setTotalCost(rs.getInt("total_cost"));
+            request.setTotalCost(rs.getString("total_cost"));
             request.setUserLogin(rs.getString("user_login"));
             request.setCompilationStatusId(rs.getInt("compilation_status_id"));
             request.setPaymentStatusId(rs.getInt("payment_status_id"));
             res.add(request);
         }
         return res;
-    }
+    }*/
 
-    @Override
+    /*@Override
     public boolean updateCompilationStatusToFinish() {
         try (PreparedStatement ps = connection.prepareStatement(UPDATE_COMPILATION_STATUS)) {
             return true;
@@ -358,7 +369,7 @@ public class DBManager implements DBManagerInterface {
     public static void main(String[] args) {
         DBManager dbManager = DBManager.getInstance();
         System.out.println(dbManager.getUserByLogin("MainManeger").getRoleId());
-        //dbManager.registration("Masha23" , "masha23@gmail.com", "12345", "Masha", "DAdah", "380001201020");
-    }
+        dbManager.registration("Masha23" , "masha23@gmail.com", "12345", "Masha", "DAdah", "380001201020");
+    }*/
 
 }

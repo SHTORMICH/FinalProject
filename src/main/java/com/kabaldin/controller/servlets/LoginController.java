@@ -1,6 +1,6 @@
 package com.kabaldin.controller.servlets;
 
-import com.kabaldin.controller.DAO.DBManager;
+import com.kabaldin.controller.DAO.ImpDAO.ImpUserDAO;
 import com.kabaldin.controller.DAO.entity.User;
 
 import javax.servlet.ServletException;
@@ -25,15 +25,17 @@ public class LoginController extends HttpServlet {
         String login = req.getParameter(LOGIN);
         String password = req.getParameter("password");
         try {
-            User user = DBManager.getInstance().getUserByLoginAndPassword(login, password);
+            User user = ImpUserDAO.getInstance().getUserByLoginAndPassword(login, password);
             HttpSession session = req.getSession();
             session.setAttribute(LOGIN, user.getLogin());
             if (user.getRoleId() == 1) {
                 resp.sendRedirect("admin.jsp");
             } else if (user.getRoleId() == 2) {
                 resp.sendRedirect("admin.jsp");
+            } else if (user.getRoleId() == 3) {
+                resp.sendRedirect("profileUser");
             } else {
-                resp.sendRedirect("user/profile.jsp");
+                resp.sendRedirect("login.jsp");
             }
         } catch (Exception e) {
             req.setAttribute("error", e.getMessage());

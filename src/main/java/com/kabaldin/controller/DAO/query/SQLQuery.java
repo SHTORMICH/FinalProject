@@ -1,8 +1,8 @@
-package com.kabaldin.controller.DAO;
+package com.kabaldin.controller.DAO.query;
 
 public abstract class SQLQuery {
 
-    static class UserQuery {
+    public static class UserQuery {
         public static final String INSERT_USER = "INSERT INTO user(login, email, password, first_name, last_name, phone_number, account, role_id) VALUES (?, ?, ?, ?, ?, ?, 0, 3);";
         public static final String SELECT_USER_BY_LOGIN = "SELECT * FROM user WHERE login=?;";
         public static final String SELECT_USER_BY_LOGIN_AND_PASSWORD = "SELECT * FROM user WHERE login=?, password=?;";
@@ -17,9 +17,9 @@ public abstract class SQLQuery {
         public static final String DELETE_USER = "DELETE FROM user WHERE login=?;";
     }
 
-    static class RequestQuery {
+    public static class RequestQuery {
         public static final String ADD_REQUEST = "INSERT INTO request(description, date, master, total_cost, user_login, compilation_status_id, payment_status_id) \n" +
-                "VALUES (?, NOW(), 'no_master', ?, ?, 1, 1);";
+                "VALUES (?, NOW(), 'no_master', 0, ?, 1, 1);";
         public static final String SELECT_ALL_REQUESTS = "SELECT * FROM request;";
         public static final String UPDATE_COMPILATION_STATUS = "UPDATE request SET compilation_status_id = 2;";
         public static final String UPDATE_PAYMENT_STATUS_TO_PAID = "UPDATE request SET payment_status_id = 2;";

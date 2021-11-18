@@ -7,8 +7,6 @@ n
 >src/main/java/com/kabaldin/controller/DAO/entity/Feedback.java,a\b\ab71927f930b2f91b9798bc266047a7da462d7c3
 w
 Gsrc/main/java/com/kabaldin/controller/DAO/entity/CompilationStatus.java,3\6\369436f149476df6653faf2c8137b2d7a0c15c2a
-m
-=src/main/java/com/kabaldin/controller/DAO/entity/Request.java,4\b\4bf96e650465945914344d446fad4940d79e4d20
 r
 Bsrc/main/java/com/kabaldin/controller/constants/PaymentStatus.java,9\d\9d236bf7db2d0333f96d3deea375c547eabf786c
 v
@@ -17,21 +15,9 @@ p
 @src/main/java/com/kabaldin/controller/constants/AccessLevel.java,9\2\9222cd0025cd91b4b854ca1fff626b323929150f
 \
 ,.idea/inspectionProfiles/Project_Default.xml,4\9\496a238a6afa168dbaf6efd37bb459331589579c
-I
-src/main/webapp/index.jsp,8\e\8e6d3b70c9f5b02570779b0441540d45eceb0ded
 p
 @src/main/java/com/kabaldin/controller/filter/EncodingFilter.java,7\c\7cb39abd97b2912a04a33f81d14d3740237eddef
-P
- src/main/webapp/registration.jsp,d\d\dd51f7041d5a8d7bb17c79a85099a350e198ae09
-s
-Csrc/main/java/com/kabaldin/controller/listener/ContextListener.java,6\8\6893f123cfadfdfdd09f947f517564598c954405
-w
-Gsrc/main/java/com/kabaldin/controller/listener/DBConnectionManager.java,a\3\a36cac2c61c00e232d10f66dcb7fa9830b12afbe
 7
 pom.xml,4\4\442292b8a7efeabbe4cc176709b833b1792140ec
-O
-src/main/webapp/WEB-INF/web.xml,2\e\2e22b6edd746fa3dc40ad7276c87c8d87d72a392
-g
-7src/main/java/com/kabaldin/controller/DAO/SQLQuery.java,e\7\e7bb0839f5b3d3dc479e81ad3053b2d3c1610d37
 V
 &src/main/webapp/userInterface/user.jsp,0\a\0a36980e0f5953ba68d19d9d417c12b68b88ddab

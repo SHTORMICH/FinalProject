@@ -1,5 +1,6 @@
 package com.kabaldin.controller.servlets;
 
+import com.kabaldin.controller.DAO.ImpDAO.ImpUserDAO;
 import com.kabaldin.controller.DAO.entity.User;
 
 import javax.servlet.ServletException;
@@ -9,8 +10,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet("/reg")
+@WebServlet("/registration")
 public class RegistrationServlet extends HttpServlet {
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.getRequestDispatcher("/registration.jsp").forward(req, resp);
+    }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -23,7 +29,8 @@ public class RegistrationServlet extends HttpServlet {
         String lastName = req.getParameter("lastName");
         String phoneNumber = req.getParameter("phoneNumber");
 
-        new User(login, password, email, firstName, lastName, phoneNumber);
-        resp.sendRedirect("/index.jsp");
+        User user = new User(login, email, password, firstName, lastName, phoneNumber);
+        ImpUserDAO.getInstance().saveUser(user);
+        getServletContext().getRequestDispatcher("/user/profile.jsp");
     }
 }

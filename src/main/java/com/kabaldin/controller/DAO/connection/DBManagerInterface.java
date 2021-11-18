@@ -1,4 +1,4 @@
-package com.kabaldin.controller.DAO;
+package com.kabaldin.controller.DAO.connection;
 
 import com.kabaldin.controller.DAO.entity.Request;
 import com.kabaldin.controller.DAO.entity.User;
@@ -7,13 +7,11 @@ import java.util.List;
 
 public interface DBManagerInterface {
 // User
-    public boolean registration(String login, String email, String password, String first_name, String last_name, String phone_number);
+    /*public boolean registration(String login, String email, String password, String first_name, String last_name, String phone_number);
 
     public User logIn(String login, String password);
 
     public User getUserByLoginAndPassword(String login, String password);
-
-    //public boolean userIsExist(String login, String password);
 
     public User getUserByLogin(String login);
 
@@ -23,10 +21,10 @@ public interface DBManagerInterface {
 
     public boolean changeUsersInfo(String login, String email, String password, String firstName, String lastName, String phoneNumber);
 
-    public boolean deleteUserByLogin(String login);
+    public boolean deleteUserByLogin(String login);*/
 
 // Request
-    public int creatRequest(Request request, String description, int total_cost, String user_login);
+    //public int creatRequest(String description, String total_cost, String user_login);
 
     /*public boolean lowToBigDate();
 
@@ -38,7 +36,7 @@ public interface DBManagerInterface {
 
     public boolean inWorkCompilationStatus();
 
-    public boolean finishCompilationStatus();*/
+    public boolean finishCompilationStatus();
 
     public List<Request> getUserRequests(int userId);
 
@@ -58,5 +56,7 @@ public interface DBManagerInterface {
 
 // Feedback
 
-    public int addFeedbackForMasterWork (String masterName, String feedback, int rating, int request_id);
+    public int addFeedbackForMasterWork (String masterName, String feedback, int rating, int request_id);*/
+
+
 }

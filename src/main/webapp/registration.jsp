@@ -12,20 +12,22 @@
     <title>User Form</title>
 </head>
 <body>
-<form action="reg" method="POST">
-    login: <input name="login" />
+<h1>Registration</h1><br>
+<form action="${pageContext.request.contextPath}/registration" method="POST">
+    login: <input name="login" required/>
     <br><br>
-    email: <input name="email" />
+    email: <input name="email" required/>
     <br><br>
-    password: <input name="password" />
+    password: <input name="password" required/>
     <br><br>
-    firstName: <input name="firstName" />
+    firstName: <input name="firstName" required/>
     <br><br>
-    lastName: <input name="lastName" />
+    lastName: <input name="lastName" required/>
     <br><br>
-    phoneNumber: <input name="phoneNumber" />
+    phoneNumber: <input name="phoneNumber" required/>
     <br><br>
-    <input type="submit" value="Submit" />
+    <input type="submit" value="Submit" required/>
 </form>
+<a href="${pageContext.request.contextPath}/login">LogIn</a>
 </body>
 </html>

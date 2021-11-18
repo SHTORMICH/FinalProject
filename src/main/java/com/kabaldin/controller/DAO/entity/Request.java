@@ -8,10 +8,19 @@ public class Request {
     private String description;
     private String master;
     private String date;
-    private int totalCost;
+    private String totalCost;
     private String userLogin;
     private int compilationStatusId;
     private int paymentStatusId;
+
+    public Request() {
+    }
+
+    public Request(String description, String totalCost, String userLogin) {
+        this.description = description;
+        this.totalCost = totalCost;
+        this.userLogin = userLogin;
+    }
 
     public int getId() {
         return id;
@@ -45,11 +54,11 @@ public class Request {
         this.date = date;
     }
 
-    public int getTotalCost() {
+    public String getTotalCost() {
         return totalCost;
     }
 
-    public void setTotalCost(int totalCost) {
+    public void setTotalCost(String totalCost) {
         this.totalCost = totalCost;
     }
 
@@ -80,7 +89,7 @@ public class Request {
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
-        if (!(obj instanceof User)) return false;
+        if (!(obj instanceof Request)) return false;
         Request request = (Request) obj;
         return id == request.id &&
                 Objects.equals(description, request.description) &&
@@ -88,7 +97,7 @@ public class Request {
                 Objects.equals(date, request.date) &&
                 Objects.equals(compilationStatusId, request.compilationStatusId) &&
                 Objects.equals(paymentStatusId, request.paymentStatusId) &&
-                totalCost == request.totalCost &&
+                Objects.equals(totalCost, request.totalCost) &&
                 Objects.equals(userLogin, request.userLogin);
     }
 
@@ -100,7 +109,7 @@ public class Request {
                 ((date == null) ? 0 : date.hashCode()) +
                 compilationStatusId +
                 paymentStatusId +
-                totalCost +
+                ((totalCost == null) ? 0 : totalCost.hashCode()) +
                 ((userLogin == null) ? 0 : userLogin.hashCode());
         return result;
     }

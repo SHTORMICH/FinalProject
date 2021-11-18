@@ -85,7 +85,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`request` (
     `description` VARCHAR(10000) NOT NULL,
     `master` VARCHAR(255) NOT NULL,
     `date` DATETIME NULL,
-    `total_cost` DECIMAL(9) NOT NULL,
+    `total_cost` VARCHAR(255) NOT NULL,
     `user_login` VARCHAR(45) NOT NULL,
     `compilation_status_id` INT NOT NULL,
     `payment_status_id` INT NOT NULL,

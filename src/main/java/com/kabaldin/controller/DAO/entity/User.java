@@ -1,14 +1,10 @@
 package com.kabaldin.controller.DAO.entity;
 
-import com.kabaldin.controller.DAO.DBManager;
-
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Objects;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class User {
 
@@ -27,32 +23,12 @@ public class User {
     }
 
     public User(String login, String email, String password, String firstName, String lastName, String phoneNumber) {
-        if (matchLogin(login) && matchEmail(email) && matchPassword(password)) {
-            DBManager.getInstance().registration(login, email, passwordHash(password), firstName, lastName, phoneNumber);
-        } else {
-            throw new RuntimeException("Incorrect input login or email or password;");
-        }
-    }
-
-    private boolean matchLogin(String login) {
-        String regex = "^[a-z0-9_-]{3,45}$";
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(login);
-        return matcher.matches();
-    }
-
-    private boolean matchEmail(String email) {
-        String regex = "^([a-z0-9_.-]+)@([a-z.-]+).([a-z.]{2,6})$";
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(email);
-        return matcher.matches();
-    }
-
-    private boolean matchPassword(String password) {
-        String regex = "^[a-z0-9_-]{6,45}$";
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(password);
-        return matcher.matches();
+        this.login = login;
+        this.email = email;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phoneNumber = phoneNumber;
     }
 
     private String passwordHash(String password) {
