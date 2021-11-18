@@ -8,7 +8,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
 
 @WebServlet("/reg")
 public class RegistrationServlet extends HttpServlet {
@@ -26,6 +25,5 @@ public class RegistrationServlet extends HttpServlet {
 
         new User(login, password, email, firstName, lastName, phoneNumber);
         resp.sendRedirect("/index.jsp");
-
     }
 }

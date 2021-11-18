@@ -11,11 +11,11 @@ public interface DBManagerInterface {
 
     public User logIn(String login, String password);
 
-    public User.AccessLevel getUserByLoginAndPassword(String login, String password);
+    public User getUserByLoginAndPassword(String login, String password);
 
-    public boolean userIsExist(String login, String password);
+    //public boolean userIsExist(String login, String password);
 
-    public User getUsersByLogin(String login);
+    public User getUserByLogin(String login);
 
     public List<User> getUsersByRole(int role_id);
 

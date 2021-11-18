@@ -2,20 +2,21 @@ package com.kabaldin.controller.DAO;
 
 import com.kabaldin.controller.DAO.entity.Request;
 import com.kabaldin.controller.DAO.entity.User;
+
 import static com.kabaldin.controller.DAO.SQLQuery.UserQuery.*;
 import static com.kabaldin.controller.DAO.SQLQuery.RequestQuery.*;
 import static com.kabaldin.controller.DAO.SQLQuery.FeedbackQuery.*;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Properties;
 import java.util.logging.Logger;
 
-public class DBManager implements DBManagerInterface{
+public class DBManager implements DBManagerInterface {
     private static Connection connection;
     private static DBManager dbManager;
     private final Logger logger = Logger.getLogger(DBManager.class.getName());
@@ -76,33 +77,22 @@ public class DBManager implements DBManagerInterface{
     }
 
     @Override
-    public User.AccessLevel getUserByLoginAndPassword(String login, String password) {
-        User.AccessLevel userRole = User.AccessLevel.USER;;
-        try (PreparedStatement ps = connection.prepareStatement(SELECT_USER_BY_LOGIN_AND_PASSWORD)) {
-            ps.setString(1, login);
-            ps.setString(2, password);
-            try (ResultSet rs = ps.executeQuery()){
-                if (rs.getInt("role_id") == 1) {
-                    userRole = User.AccessLevel.MANAGE;
-                } else if (rs.getInt("role_id") == 2) {
-                    userRole = User.AccessLevel.MASTER;
-                } else {
-                    userRole = User.AccessLevel.USER;
-                }
-            }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+    public User getUserByLoginAndPassword(String login, String password) {
+        Optional<User> user = Optional.ofNullable(dbManager.getUserByLogin(login));
+        if (user.isPresent() && user.get().getPassword().equals(password)) {
+            return user.get();
         }
-        return userRole;
+        logger.warning("Failed to log in with login - " + login);
+        throw new RuntimeException("Login or password are invalid");
     }
 
-    @Override
+    /*@Override
     public boolean userIsExist(String login, String password) {
         boolean result = false;
         try (PreparedStatement ps = connection.prepareStatement(SELECT_ONE_USER_BY_LOGIN_AND_PASSWORD)) {
             ps.setString(1, login);
             ps.setString(2, password);
-            try (ResultSet rs = ps.executeQuery()){
+            try (ResultSet rs = ps.executeQuery()) {
                 if (rs.getString("login").equals(login) &&
                         rs.getString("password").equals(password)) {
                     result = true;
@@ -114,21 +104,25 @@ public class DBManager implements DBManagerInterface{
             throwables.printStackTrace();
         }
         return result;
-    }
+    }*/
 
 
     @Override
-    public User getUsersByLogin(String login) {
-        User user = null;
+    public User getUserByLogin(String login) {
+        User user = new User();
         try (PreparedStatement ps = connection.prepareStatement(SELECT_USER_BY_LOGIN)) {
             ps.setString(1, login);
             try (ResultSet rs = ps.executeQuery()) {
-                user = new User();
-                user.setLogin(rs.getString("login"));
-                user.setEmail(rs.getString("email"));
-                user.setFirstName(rs.getString("first_name"));
-                user.setLastName(rs.getString("last_name"));
-                user.setPhoneNumber(rs.getString("phone_number"));
+                if (rs.next()) {
+                    user.setLogin(rs.getString("login"));
+                    user.setEmail(rs.getString("email"));
+                    user.setPassword(rs.getString("password"));
+                    user.setFirstName(rs.getString("first_name"));
+                    user.setLastName(rs.getString("last_name"));
+                    user.setPhoneNumber(rs.getString("phone_number"));
+                    user.setAccount(rs.getInt("account"));
+                    user.setRoleId(rs.getInt("role_id"));
+                }
             }
         } catch (SQLException throwables) {
             logger.warning("User doesn't create! Parameter String login");
@@ -142,7 +136,7 @@ public class DBManager implements DBManagerInterface{
         List<User> res = null;
         try (PreparedStatement ps = connection.prepareStatement(SELECT_USER_BY_ROLE)) {
             ps.setInt(1, roleId);
-            try (ResultSet resultSet = ps.executeQuery()){
+            try (ResultSet resultSet = ps.executeQuery()) {
                 res = resultSetToUserList(resultSet);
             }
         } catch (SQLException throwables) {
@@ -164,7 +158,7 @@ public class DBManager implements DBManagerInterface{
         return usersList;
     }
 
-    private List<User> resultSetToUserList (ResultSet rs) throws SQLException {
+    private List<User> resultSetToUserList(ResultSet rs) throws SQLException {
         List<User> res = new ArrayList<>();
         while (rs.next()) {
             User user = new User();
@@ -229,42 +223,12 @@ public class DBManager implements DBManagerInterface{
         return newRowId;
     }
 
-    /*@Override
-    public boolean lowToBigDate() {
-        return false;
-    }
-
-    @Override
-    public boolean bigToLowDate() {
-        return false;
-    }
-
-    @Override
-    public boolean lowToBigTotalCost() {
-        return false;
-    }
-
-    @Override
-    public boolean bigToLowTotalCost() {
-        return false;
-    }
-
-    @Override
-    public boolean inWorkCompilationStatus() {
-        return false;
-    }
-
-    @Override
-    public boolean finishCompilationStatus() {
-        return false;
-    }*/
-
     @Override
     public List<Request> getUserRequests(int userId) {
         List<Request> res = null;
         try (PreparedStatement ps = connection.prepareStatement(SELECT_ALL_REQUESTS)) {
             ps.setInt(1, userId);
-            try (ResultSet resultSet = ps.executeQuery()){
+            try (ResultSet resultSet = ps.executeQuery()) {
                 res = resultSetToRequestList(resultSet);
             }
         } catch (SQLException throwables) {
@@ -273,7 +237,7 @@ public class DBManager implements DBManagerInterface{
         return res;
     }
 
-    private List<Request> resultSetToRequestList (ResultSet rs) throws SQLException {
+    private List<Request> resultSetToRequestList(ResultSet rs) throws SQLException {
         List<Request> res = new ArrayList<>();
         while (rs.next()) {
             Request request = new Request();
@@ -393,8 +357,8 @@ public class DBManager implements DBManagerInterface{
 
     public static void main(String[] args) {
         DBManager dbManager = DBManager.getInstance();
-
-        dbManager.registration("Masha23" , "masha23@gmail.com", "12345", "Masha", "DAdah", "380001201020");
+        System.out.println(dbManager.getUserByLogin("MainManeger").getRoleId());
+        //dbManager.registration("Masha23" , "masha23@gmail.com", "12345", "Masha", "DAdah", "380001201020");
     }
 
 }
