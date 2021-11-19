@@ -33,7 +33,7 @@ public class LoginController extends HttpServlet {
             } else if (user.getRoleId() == 2) {
                 resp.sendRedirect("admin.jsp");
             } else if (user.getRoleId() == 3) {
-                resp.sendRedirect("profileUser");
+                resp.sendRedirect("user/profile");
             } else {
                 resp.sendRedirect("login.jsp");
             }

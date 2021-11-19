@@ -15,9 +15,7 @@ p
 @src/main/java/com/kabaldin/controller/constants/AccessLevel.java,9\2\9222cd0025cd91b4b854ca1fff626b323929150f
 \
 ,.idea/inspectionProfiles/Project_Default.xml,4\9\496a238a6afa168dbaf6efd37bb459331589579c
-p
-@src/main/java/com/kabaldin/controller/filter/EncodingFilter.java,7\c\7cb39abd97b2912a04a33f81d14d3740237eddef
+|
+Lsrc/main/java/com/kabaldin/controller/DAO/connection/DBManagerInterface.java,4\7\477ffee96b14e4392893d5e4f0222d6ead28d319
 7
 pom.xml,4\4\442292b8a7efeabbe4cc176709b833b1792140ec
-V
-&src/main/webapp/userInterface/user.jsp,0\a\0a36980e0f5953ba68d19d9d417c12b68b88ddab

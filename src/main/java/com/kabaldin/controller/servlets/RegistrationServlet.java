@@ -31,6 +31,7 @@ public class RegistrationServlet extends HttpServlet {
 
         User user = new User(login, email, password, firstName, lastName, phoneNumber);
         ImpUserDAO.getInstance().saveUser(user);
+        req.getSession().setAttribute("user", user);
         getServletContext().getRequestDispatcher("/user/profile.jsp");
     }
 }

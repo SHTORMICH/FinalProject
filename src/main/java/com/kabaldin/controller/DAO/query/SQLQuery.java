@@ -19,8 +19,9 @@ public abstract class SQLQuery {
 
     public static class RequestQuery {
         public static final String ADD_REQUEST = "INSERT INTO request(description, date, master, total_cost, user_login, compilation_status_id, payment_status_id) \n" +
-                "VALUES (?, NOW(), 'no_master', 0, ?, 1, 1);";
+                "VALUES (?, NOW(), 'no_master', ?, ?, 1, 1);";
         public static final String SELECT_ALL_REQUESTS = "SELECT * FROM request;";
+        public static final String SELECT_ALL_REQUESTS_BY_USER_LOGIN = "SELECT * FROM request WHERE user_login=?;";
         public static final String UPDATE_COMPILATION_STATUS = "UPDATE request SET compilation_status_id = 2;";
         public static final String UPDATE_PAYMENT_STATUS_TO_PAID = "UPDATE request SET payment_status_id = 2;";
         public static final String UPDATE_PAYMENT_STATUS_TO_CANCELED = "UPDATE request SET payment_status_id = 3;";

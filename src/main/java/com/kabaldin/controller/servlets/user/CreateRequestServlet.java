@@ -29,6 +29,6 @@ public class CreateRequestServlet extends HttpServlet {
         String totalCost = req.getParameter("total_cost");
         Request request = new Request(description, totalCost, login);
         ImpRequestDAO.getInstance().saveRequest(request);
-        getServletContext().getRequestDispatcher("/profileUser").forward(req, resp);
+        getServletContext().getRequestDispatcher("/user/creatRequest").forward(req, resp);
     }
 }
