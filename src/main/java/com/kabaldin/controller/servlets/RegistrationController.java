@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @WebServlet("/registration")
-public class RegistrationServlet extends HttpServlet {
+public class RegistrationController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -32,6 +32,6 @@ public class RegistrationServlet extends HttpServlet {
         User user = new User(login, email, password, firstName, lastName, phoneNumber);
         ImpUserDAO.getInstance().saveUser(user);
         req.getSession().setAttribute("user", user);
-        getServletContext().getRequestDispatcher("/user/profile.jsp");
+        resp.sendRedirect(req.getContextPath() + "/login");
     }
 }

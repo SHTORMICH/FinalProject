@@ -8,7 +8,7 @@ public class Request {
     private String description;
     private String master;
     private String date;
-    private String totalCost;
+    private int totalCost;
     private String userLogin;
     private int compilationStatusId;
     private int paymentStatusId;
@@ -16,7 +16,7 @@ public class Request {
     public Request() {
     }
 
-    public Request(String description, String totalCost, String userLogin) {
+    public Request(String description, int totalCost, String userLogin) {
         this.description = description;
         this.totalCost = totalCost;
         this.userLogin = userLogin;
@@ -54,11 +54,11 @@ public class Request {
         this.date = date;
     }
 
-    public String getTotalCost() {
+    public int getTotalCost() {
         return totalCost;
     }
 
-    public void setTotalCost(String totalCost) {
+    public void setTotalCost(int totalCost) {
         this.totalCost = totalCost;
     }
 
@@ -109,7 +109,7 @@ public class Request {
                 ((date == null) ? 0 : date.hashCode()) +
                 compilationStatusId +
                 paymentStatusId +
-                ((totalCost == null) ? 0 : totalCost.hashCode()) +
+                totalCost +
                 ((userLogin == null) ? 0 : userLogin.hashCode());
         return result;
     }

@@ -1,21 +1,21 @@
 
 j
 :src/main/java/com/kabaldin/controller/DAO/entity/Role.java,b\2\b270a65a24d68ff3c3a3807f9c324490d036a10f
-s
-Csrc/main/java/com/kabaldin/controller/DAO/entity/PaymentStatus.java,2\5\258521792cd71001383c1d8b08c95a6d812ac52c
 n
 >src/main/java/com/kabaldin/controller/DAO/entity/Feedback.java,a\b\ab71927f930b2f91b9798bc266047a7da462d7c3
-w
-Gsrc/main/java/com/kabaldin/controller/DAO/entity/CompilationStatus.java,3\6\369436f149476df6653faf2c8137b2d7a0c15c2a
-r
-Bsrc/main/java/com/kabaldin/controller/constants/PaymentStatus.java,9\d\9d236bf7db2d0333f96d3deea375c547eabf786c
-v
-Fsrc/main/java/com/kabaldin/controller/constants/CompilationStatus.java,d\0\d0b42ca83d3242e4760a3442587328f33e60140b
-p
-@src/main/java/com/kabaldin/controller/constants/AccessLevel.java,9\2\9222cd0025cd91b4b854ca1fff626b323929150f
 \
 ,.idea/inspectionProfiles/Project_Default.xml,4\9\496a238a6afa168dbaf6efd37bb459331589579c
-|
-Lsrc/main/java/com/kabaldin/controller/DAO/connection/DBManagerInterface.java,4\7\477ffee96b14e4392893d5e4f0222d6ead28d319
 7
 pom.xml,4\4\442292b8a7efeabbe4cc176709b833b1792140ec
+I
+src/main/webapp/index.jsp,8\e\8e6d3b70c9f5b02570779b0441540d45eceb0ded
+O
+src/main/webapp/WEB-INF/web.xml,2\e\2e22b6edd746fa3dc40ad7276c87c8d87d72a392
+P
+ src/main/webapp/registration.jsp,d\d\dd51f7041d5a8d7bb17c79a85099a350e198ae09
+p
+@src/main/java/com/kabaldin/controller/filter/EncodingFilter.java,7\c\7cb39abd97b2912a04a33f81d14d3740237eddef
+s
+Csrc/main/java/com/kabaldin/controller/servlets/LoginController.java,6\5\65459568b47c355d3379cc701513438e2290b60b
+l
+<src/main/java/com/kabaldin/controller/filter/AuthFilter.java,7\e\7e42e5fcfff738d33295d9952c56f8906ac0f04a

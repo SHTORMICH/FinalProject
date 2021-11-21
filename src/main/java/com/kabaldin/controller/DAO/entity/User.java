@@ -17,7 +17,6 @@ public class User {
     private String phoneNumber;
     private int account;
     private int roleId;
-    private Role enumRole;
 
     public User() {
     }
@@ -118,14 +117,6 @@ public class User {
         this.roleId = roleId;
     }
 
-    public Role getEnumRole() {
-        return enumRole;
-    }
-
-    public void setEnumRole(Role enumRole) {
-        this.enumRole = enumRole;
-    }
-
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
@@ -155,9 +146,5 @@ public class User {
                 ((phoneNumber == null) ? 0 : phoneNumber.hashCode())
                 + account + roleId;
         return result;
-    }
-
-    public enum AccessLevel {
-        MANAGE, MASTER, USER
     }
 }

@@ -2,7 +2,7 @@ package com.kabaldin.controller.DAO.entity;
 
 public class PaymentStatus {
     private int id;
-    private int paymentStatus;
+    private String paymentStatus;
 
     public int getId() {
         return id;
@@ -12,11 +12,11 @@ public class PaymentStatus {
         this.id = id;
     }
 
-    public int getPaymentStatus() {
+    public String getPaymentStatus() {
         return paymentStatus;
     }
 
-    public void setPaymentStatus(int paymentStatus) {
+    public void setPaymentStatus(String paymentStatus) {
         this.paymentStatus = paymentStatus;
     }
 
@@ -32,7 +32,7 @@ public class PaymentStatus {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + paymentStatus;
+        result = prime * result + ((paymentStatus == null) ? 0 : paymentStatus.hashCode());
         return result;
     }
 }

@@ -1,9 +1,6 @@
 package com.kabaldin.controller.servlets.user;
 
-import com.kabaldin.controller.DAO.ImpDAO.ImpRequestDAO;
 import com.kabaldin.controller.DAO.ImpDAO.ImpUserDAO;
-import com.kabaldin.controller.DAO.entity.Request;
-import com.kabaldin.controller.DAO.entity.User;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,20 +9,23 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.List;
 
-@WebServlet("/user/profile")
-public class Profile extends HttpServlet {
+@WebServlet("/user/account")
+public class IncreaseAccountController extends HttpServlet {
     private static final String LOGIN = "login";
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.getRequestDispatcher("/user/account.jsp").forward(req, resp);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.setContentType("text/html");
         HttpSession session = req.getSession();
         String login = (String) session.getAttribute(LOGIN);
-        User user = ImpUserDAO.getInstance().getUserByLogin(login);
-        List<Request> userRequests = ImpRequestDAO.getInstance().getAllUserRequest(login);
-        req.setAttribute("user", user);
-        req.setAttribute("userRequests", userRequests);
-        getServletContext().getRequestDispatcher("/user/profile.jsp").forward(req, resp);
+        int account = Integer.parseInt(req.getParameter("account"));
+        ImpUserDAO.getInstance().updateUserAccountByLogin(account, login);
+        resp.sendRedirect(req.getContextPath() + "/user/profile");
     }
 }

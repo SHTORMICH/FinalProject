@@ -12,7 +12,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @WebServlet("/login")
-public class LoginController extends HttpServlet {
+public class LogInController extends HttpServlet {
     private static final String LOGIN = "login";
 
     @Override
@@ -29,7 +29,7 @@ public class LoginController extends HttpServlet {
             HttpSession session = req.getSession();
             session.setAttribute(LOGIN, user.getLogin());
             if (user.getRoleId() == 1) {
-                resp.sendRedirect("admin.jsp");
+                resp.sendRedirect("manager/users");
             } else if (user.getRoleId() == 2) {
                 resp.sendRedirect("admin.jsp");
             } else if (user.getRoleId() == 3) {

@@ -11,13 +11,13 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-@WebServlet("/user/creatRequest")
-public class CreateRequestServlet extends HttpServlet {
+@WebServlet("/user/request")
+public class CreateRequestController extends HttpServlet {
     private static final String LOGIN = "login";
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("/user/creatRequest.jsp").forward(req, resp);
+        req.getRequestDispatcher("/user/request.jsp").forward(req, resp);
     }
 
     @Override
@@ -26,9 +26,9 @@ public class CreateRequestServlet extends HttpServlet {
         HttpSession session = req.getSession();
         String login = (String) session.getAttribute(LOGIN);
         String description = req.getParameter("description");
-        String totalCost = req.getParameter("total_cost");
+        int totalCost = Integer.parseInt(req.getParameter("total_cost"));
         Request request = new Request(description, totalCost, login);
         ImpRequestDAO.getInstance().saveRequest(request);
-        getServletContext().getRequestDispatcher("/user/creatRequest").forward(req, resp);
+        resp.sendRedirect(req.getContextPath() + "/user/profile");
     }
 }

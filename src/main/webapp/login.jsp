@@ -15,9 +15,9 @@
 <div class="form">
     <h1>Login</h1><br>
     <form method="post" action="${pageContext.request.contextPath}/login">
-        Login: <input type="text" required placeholder="login" name="login" required>
+        Login: <input type="text" placeholder="login" name="login" required>
         <br><br>
-        Password: <input type="password" required placeholder="password" name="password" required><br><br>
+        Password: <input type="password" placeholder="password" name="password" required><br><br>
         <input class="button" type="submit" value="Войти">
     </form>
     <a href="${pageContext.request.contextPath}/registration">Registration</a>

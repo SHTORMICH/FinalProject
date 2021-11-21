@@ -2,7 +2,7 @@ package com.kabaldin.controller.DAO.entity;
 
 public class CompilationStatus {
     private int id;
-    private int compilationStatus;
+    private String compilationStatus;
 
     public int getId() {
         return id;
@@ -12,11 +12,11 @@ public class CompilationStatus {
         this.id = id;
     }
 
-    public int getCompilationStatus() {
+    public String getCompilationStatus() {
         return compilationStatus;
     }
 
-    public void setCompilationStatus(int compilationStatus) {
+    public void setCompilationStatus(String compilationStatus) {
         this.compilationStatus = compilationStatus;
     }
 
@@ -32,7 +32,7 @@ public class CompilationStatus {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + compilationStatus;
+        result = prime * result + ((compilationStatus == null) ? 0 : compilationStatus.hashCode());
         return result;
     }
 }
