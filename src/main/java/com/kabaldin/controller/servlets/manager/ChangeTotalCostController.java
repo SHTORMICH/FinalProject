@@ -15,14 +15,16 @@ public class ChangeTotalCostController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        int id = Integer.parseInt(req.getParameter("id"));
+        req.setAttribute("id", id);
         req.getRequestDispatcher("/manager/total_cost.jsp").forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        int idRequest = Integer.parseInt(req.getParameter("id"));
+        int id = Integer.parseInt(req.getParameter("id"));
         int totalCost = Integer.parseInt(req.getParameter("totalCost"));
-        ImpRequestDAO.getInstance().changeTotalCost(idRequest, totalCost);
+        ImpRequestDAO.getInstance().changeTotalCost(id, totalCost);
         resp.sendRedirect(req.getContextPath() + "/manager/users/requests");
     }
 }

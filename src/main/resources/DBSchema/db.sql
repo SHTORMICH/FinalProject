@@ -45,6 +45,8 @@ CREATE TABLE IF NOT EXISTS `mydb`.`user` (
 INSERT INTO user(login, email, password, first_name, last_name, phone_number, account, role_id)
 VALUES ('MainManeger', 'maneger@gmail.com', 12345, 'Sasha', 'Kabaldin', 380111111111, 0, 1);
 INSERT INTO user(login, email, password, first_name, last_name, phone_number, account, role_id)
+VALUES ('Not assigned', 'Not assigned', 'Not assigned', 'Not', 'assigned', 0, 0, 2);
+INSERT INTO user(login, email, password, first_name, last_name, phone_number, account, role_id)
 VALUES ('MasterOne', 'masterone@gmail.com', 'master1', 'Denis', 'Denisovich', 380888888888, 0, 2);
 INSERT INTO user(login, email, password, first_name, last_name, phone_number, account, role_id)
 VALUES ('MasterTwo', 'mastertwo@gmail.com', 'master2', 'Pavlo', 'Pavlovich', 380999999999, 0, 2);

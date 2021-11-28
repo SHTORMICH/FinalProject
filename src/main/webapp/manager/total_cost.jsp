@@ -12,6 +12,7 @@
 </head>
 <body>
 <form method="post" action="${pageContext.request.contextPath}/manager/change/totalCost">
+    <input type="hidden" name="id" value="${id}">
     <p>Change total cost: <input name="totalCost" required/></p>
     <input class="button" type="submit" value="Change"/>
 </form>

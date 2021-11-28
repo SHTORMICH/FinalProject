@@ -21,8 +21,8 @@
 <p>Email: <c:out value="${user.email}"/></p>
 <p>Phone number: <c:out value="${user.phoneNumber}"/></p>
 <p>Account: <c:out value="${user.account}"/></p>
+<p><a href="${pageContext.request.contextPath}/user/account">Top up account</a></p>
 <p><a href="${pageContext.request.contextPath}/user/request">Creat request</a></p>
-<p><a href="${pageContext.request.contextPath}/user/account">Account</a></p>
 <table>
     <thead>
     <tr>

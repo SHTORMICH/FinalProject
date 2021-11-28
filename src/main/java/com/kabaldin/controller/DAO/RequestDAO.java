@@ -10,9 +10,17 @@ public interface RequestDAO {
 
     public void saveRequest(Request request);
 
-    public List<Request> getAllUserRequest(String userLogin);
+    public List<Request> getAllUserRequestByLogin(String userLogin);
+
+    public List<Request> getAllUsersRequestForMaster(String login);
+
+    public int countAllRequest();
 
     public List<Request> getAllUsersRequest();
+
+    //public List<Request> getAllUsersRequestByColumn(String column);
+
+    public List<Request> getAllUsersRequestFilter(String column, String changer, String master, String compilationStatus, String paymentStatus, int limit, int offset);
 
     public boolean changeDescription(int id, String description);
 
@@ -21,6 +29,8 @@ public interface RequestDAO {
     public boolean changePaymentStatusToPaid(int id);
 
     public boolean changePaymentStatusToCanceled(int id);
+
+    public boolean changePaymentStatus(int id, int paymentStatusId);
 
     public boolean changeMasterInRequest(int id, String nameOfMaster);
 

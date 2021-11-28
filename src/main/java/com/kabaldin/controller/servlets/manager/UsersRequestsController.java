@@ -19,19 +19,44 @@ import java.util.Map;
 public class UsersRequestsController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        List<Request> requests = ImpRequestDAO.getInstance().getAllUsersRequest();
-        Map<String, String> mastersName = ImpUserDAO.getInstance().getAllMasters();
-        Map<Integer, String> compilationStatus = ImpCompilationStatusDAO.getInstance().chooseAllCompilationStatus();
-        Map<Integer, String> paymentStatus = ImpPaymentStatusDAO.getInstance().chooseAllPaymentStatus();
+        String column = req.getParameter("column");
+        String sortType = req.getParameter("sortType");
+        int prev = tryParse(req.getParameter("prev"));
+        int next = tryParse(req.getParameter("next"));
+        int offset = tryParse(req.getParameter("offset"));
+        String nameOfMasterFilter = req.getParameter("mastersFilter");
+        String compilationStatusFilter = req.getParameter("compilationStatusFilter");
+        String paymentStatusFilter = req.getParameter("paymentStatusFilter");
+        int amountRequestsInDB = ImpRequestDAO.getInstance().countAllRequest();
+
+        if (prev != 0 && offset - prev > 0) {
+            offset -= prev;
+        } else if (next != 0 && offset + next < amountRequestsInDB) {
+            offset += next;
+        }
+        List<Request> requests = ImpRequestDAO.getInstance().getAllUsersRequestFilter(column, sortType, nameOfMasterFilter, compilationStatusFilter, paymentStatusFilter, 3, offset);
+
+        Map<String, String> mastersNames = ImpUserDAO.getInstance().getAllMasters();
+        Map<Integer, String> compilationStatuses = ImpCompilationStatusDAO.getInstance().chooseAllCompilationStatus();
+        Map<Integer, String> paymentStatuses = ImpPaymentStatusDAO.getInstance().chooseAllPaymentStatus();
         req.setAttribute("requests", requests);
-        req.setAttribute("mastersName", mastersName);
-        req.setAttribute("compilationStatus", compilationStatus);
-        req.setAttribute("paymentStatus", paymentStatus);
+        req.setAttribute("sortType", sortType);
+        req.setAttribute("column", column);
+        req.setAttribute("offset", offset);
+        req.setAttribute("mastersNames", mastersNames);
+        req.setAttribute("compilationStatuses", compilationStatuses);
+        req.setAttribute("paymentStatuses", paymentStatuses);
+        req.setAttribute("nameOfMasterFilter", nameOfMasterFilter);
+        req.setAttribute("compilationStatusFilter", compilationStatusFilter);
+        req.setAttribute("paymentStatusFilter", paymentStatusFilter);
         getServletContext().getRequestDispatcher("/manager/users_requests.jsp").forward(req, resp);
     }
 
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doPost(req, resp);
+    public static int tryParse(String text) {
+        try {
+            return Integer.parseInt(text);
+        } catch (NumberFormatException e) {
+            return 0;
+        }
     }
 }

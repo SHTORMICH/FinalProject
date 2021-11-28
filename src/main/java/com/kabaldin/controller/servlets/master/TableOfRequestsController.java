@@ -1,9 +1,8 @@
-package com.kabaldin.controller.servlets.user;
+package com.kabaldin.controller.servlets.master;
 
+import com.kabaldin.controller.DAO.ImpDAO.ImpCompilationStatusDAO;
 import com.kabaldin.controller.DAO.ImpDAO.ImpRequestDAO;
-import com.kabaldin.controller.DAO.ImpDAO.ImpUserDAO;
 import com.kabaldin.controller.DAO.entity.Request;
-import com.kabaldin.controller.DAO.entity.User;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,19 +12,21 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
-@WebServlet("/user/profile")
-public class ProfileController extends HttpServlet {
+@WebServlet("/table/requests")
+public class TableOfRequestsController extends HttpServlet {
     private static final String LOGIN = "login";
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
         String login = (String) session.getAttribute(LOGIN);
-        User user = ImpUserDAO.getInstance().getUserByLogin(login);
-        List<Request> userRequests = ImpRequestDAO.getInstance().getAllUserRequestByLogin(login);
-        req.setAttribute("user", user);
-        req.setAttribute("userRequests", userRequests);
-        getServletContext().getRequestDispatcher("/user/profile.jsp").forward(req, resp);
+
+        Map<Integer, String> compilationStatuses = ImpCompilationStatusDAO.getInstance().chooseAllCompilationStatus();
+        List<Request> requests = ImpRequestDAO.getInstance().getAllUsersRequestForMaster(login);
+        req.setAttribute("compilationStatuses", compilationStatuses);
+        req.setAttribute("requests", requests);
+        getServletContext().getRequestDispatcher("/master/tabla_requests.jsp").forward(req, resp);
     }
 }

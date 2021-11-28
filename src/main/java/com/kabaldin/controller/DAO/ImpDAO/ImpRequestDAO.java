@@ -7,8 +7,7 @@ import com.kabaldin.controller.DAO.entity.Request;
 import static com.kabaldin.controller.DAO.query.SQLQuery.RequestQuery.*;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.logging.Logger;
 
 public class ImpRequestDAO implements RequestDAO {
@@ -50,9 +49,32 @@ public class ImpRequestDAO implements RequestDAO {
     }
 
     @Override
-    public List<Request> getAllUserRequest(String userLogin) {
+    public List<Request> getAllUserRequestByLogin(String userLogin) {
+        return getRequests(userLogin, SELECT_ALL_REQUESTS_BY_USER_LOGIN);
+    }
+
+    @Override
+    public List<Request> getAllUsersRequestForMaster(String login) {
+        return getRequests(login, SELECT_ALL_REQUESTS_FOR_MASTER);
+    }
+
+    @Override
+    public int countAllRequest() {
+        int size = 0;
+        try (PreparedStatement ps = connection.prepareStatement(COUNT_ALL_REQUESTS)){
+            try (ResultSet rs = ps.executeQuery()){
+                rs.next();
+                size = rs.getInt(1);
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return size;
+    }
+
+    private List<Request> getRequests(String userLogin, String selectAllRequestsByUserLogin) {
         List<Request> requests = null;
-        try (PreparedStatement ps = connection.prepareStatement(SELECT_ALL_REQUESTS_BY_USER_LOGIN)) {
+        try (PreparedStatement ps = connection.prepareStatement(selectAllRequestsByUserLogin)) {
             ps.setString(1, userLogin);
             try (ResultSet resultSet = ps.executeQuery()) {
                 requests = resultSetToRequestList(resultSet);
@@ -63,12 +85,77 @@ public class ImpRequestDAO implements RequestDAO {
         return requests;
     }
 
+    private List<Request> resultSetToRequestList(ResultSet rs) throws SQLException {
+        List<Request> requests = new ArrayList<>();
+        while (rs.next()) {
+            Request request = new Request();
+            request.setId(rs.getInt("id"));
+            request.setDescription(rs.getString("description"));
+            request.setMaster(rs.getString("master"));
+            request.setDate(rs.getString("date"));
+            request.setTotalCost(rs.getInt("total_cost"));
+            request.setUserLogin(rs.getString("user_login"));
+            request.setCompilationStatusId(rs.getInt("compilation_status_id"));
+            request.setPaymentStatusId(rs.getInt("payment_status_id"));
+            requests.add(request);
+        }
+        return requests;
+    }
+
     @Override
     public List<Request> getAllUsersRequest() {
         List<Request> requests = null;
         try (PreparedStatement ps = connection.prepareStatement(SELECT_ALL_REQUESTS)) {
             try (ResultSet resultSet = ps.executeQuery()) {
                 requests = resultSetToRequestList(resultSet);
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return requests;
+    }
+
+    @Override
+    public List<Request> getAllUsersRequestFilter(String column, String changer, String master, String compilationStatus, String paymentStatus, int limit, int offset) {
+        List<Request> requests = null;
+        StringBuilder query = new StringBuilder();
+        query.append(SELECT_REQUEST_BY_FILTER);
+        if (master != null && !master.equals("") ||
+                compilationStatus != null && !compilationStatus.equals("") ||
+                paymentStatus != null && !paymentStatus.equals("")) {
+            query.append(" WHERE ");
+            if (master != null) {
+                query.append(" master=")
+                        .append("\'")
+                        .append(master)
+                        .append("\'");
+            }
+            if (compilationStatus != null) {
+                query.append(" AND")
+                        .append(" compilation_status_id=")
+                        .append(Integer.parseInt(compilationStatus.replaceAll("\\s+","")));
+            }
+            if (paymentStatus != null) {
+                query.append(" AND")
+                        .append(" payment_status_id=")
+                        .append(Integer.parseInt(paymentStatus.replaceAll("\\s+","")));
+            }
+        }
+        if (column != null && !column.equals("")) {
+            query.append(" ORDER BY ")
+                    .append(column)
+                    .append(" ")
+                    .append(changer);
+
+        }
+        query.append(" LIMIT ")
+                .append(limit)
+                .append(" OFFSET ")
+                .append(offset)
+                .append(";");
+        try (PreparedStatement ps = connection.prepareStatement(query.toString())) {
+            try (ResultSet rs = ps.executeQuery()) {
+                requests = resultSetToRequestList(rs);
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -127,6 +214,19 @@ public class ImpRequestDAO implements RequestDAO {
     }
 
     @Override
+    public boolean changePaymentStatus(int id, int paymentStatusId) {
+        try (PreparedStatement ps = connection.prepareStatement(UPDATE_PAYMENT_STATUS)){
+            ps.setInt(1, paymentStatusId);
+            ps.setInt(2, id);
+            ps.executeUpdate();
+            return true;
+        } catch (SQLException throwables) {
+            logger.warning("Payment status doesn't change! Parameters int id, int paymentStatusId");
+            return false;
+        }
+    }
+
+    @Override
     public boolean changeMasterInRequest(int id, String nameOfMaster) {
         try (PreparedStatement ps = connection.prepareStatement(UPDATE_MASTER)) {
             ps.setString(1, nameOfMaster);
@@ -152,27 +252,29 @@ public class ImpRequestDAO implements RequestDAO {
         }
     }
 
-    private List<Request> resultSetToRequestList(ResultSet rs) throws SQLException {
-        List<Request> requests = new ArrayList<>();
-        while (rs.next()) {
-            Request request = new Request();
-            request.setId(rs.getInt("id"));
-            request.setDescription(rs.getString("description"));
-            String masterLogin = rs.getString("master");
-            request.setMaster(ImpUserDAO.getInstance().getMasterByLogin(masterLogin));
-            request.setDate(rs.getString("date"));
-            request.setTotalCost(rs.getInt("total_cost"));
-            request.setUserLogin(rs.getString("user_login"));
-            request.setCompilationStatusId(rs.getInt("compilation_status_id"));
-            request.setPaymentStatusId(rs.getInt("payment_status_id"));
-            requests.add(request);
-        }
-        return requests;
-    }
+
 
     public static void main(String[] args) {
         ImpRequestDAO requestDAO = new ImpRequestDAO();
-        List<Request> requestList = requestDAO.getAllUsersRequest();
-        requestList.stream().forEach(System.out::println);
+        StringBuilder result = new StringBuilder();
+        List<Request> requestList = requestDAO.getAllUsersRequestFilter(null, null, null, null, null, 3, 3);
+        for (Request el:requestList) {
+            result.append(el.getId())
+                    .append(" ")
+                    .append(el.getUserLogin())
+                    .append(" ")
+                    .append(el.getTotalCost())
+                    .append(" ")
+                    .append(el.getMaster())
+                    .append(" ")
+                    .append(el.getCompilationStatusId())
+                    .append(" ")
+                    .append(el.getPaymentStatusId())
+                    .append(" ")
+                    .append(el.getDate())
+                    .append(System.lineSeparator());
+
+        }
+        System.out.println(result);
     }
 }

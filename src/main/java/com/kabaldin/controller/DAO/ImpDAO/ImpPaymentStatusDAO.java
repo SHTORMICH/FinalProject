@@ -12,12 +12,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import static com.kabaldin.controller.DAO.query.SQLQuery.CompilationStatusQuery.SELECT_ALL_COMPILATION_STATUS;
+import static com.kabaldin.controller.DAO.query.SQLQuery.PaymentStatusQuery.*;
 
 public class ImpPaymentStatusDAO implements PaymentStatusDAO {
     private final Connection connection = DBManager.getConnection();
     private static ImpPaymentStatusDAO paymentStatusDAO;
-    private final Logger logger = Logger.getLogger(ImpUserDAO.class.getName());
+    private final Logger logger = Logger.getLogger(ImpPaymentStatusDAO.class.getName());
 
     public static ImpPaymentStatusDAO getInstance() {
         if (paymentStatusDAO == null) {
@@ -29,7 +29,7 @@ public class ImpPaymentStatusDAO implements PaymentStatusDAO {
     @Override
     public Map<Integer, String> chooseAllPaymentStatus() {
         Map<Integer, String> status = new HashMap<>();
-        try (PreparedStatement ps = connection.prepareStatement(SELECT_ALL_COMPILATION_STATUS)) {
+        try (PreparedStatement ps = connection.prepareStatement(SELECT_ALL_PAYMENT_STATUS)) {
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     PaymentStatus paymentStatus = new PaymentStatus();
@@ -42,5 +42,12 @@ public class ImpPaymentStatusDAO implements PaymentStatusDAO {
             logger.warning("Doesn't find any payment status!");
         }
         return status;
+    }
+
+    public static void main(String[] args) {
+        Map<Integer, String> paymentStatus = ImpPaymentStatusDAO.getInstance().chooseAllPaymentStatus();
+        System.out.println(paymentStatus.get(1));
+        System.out.println(paymentStatus.get(2));
+
     }
 }

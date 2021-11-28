@@ -210,10 +210,6 @@ public class ImpUserDAO implements UserDAO {
 
     public static void main(String[] args) {
         ImpUserDAO userDao = new ImpUserDAO();
-        //userDao.registration("Masha234" , "masha23@gmail.com", "12345", "Masha", "DAdah", "380001201020");
-        //List<User> allUsers = userDao.getAllUsers();
-        //allUsers.stream().forEach(System.out::println);
-        System.out.println(userDao.getMasterByLogin("MasterOne"));
-
+        System.out.println(userDao.getAllMasters());
     }
 }

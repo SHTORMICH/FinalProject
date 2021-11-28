@@ -1,4 +1,4 @@
-package com.kabaldin.controller.servlets.manager;
+package com.kabaldin.controller.servlets.master;
 
 import com.kabaldin.controller.DAO.ImpDAO.ImpRequestDAO;
 
@@ -9,16 +9,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet("/manager/user/choose/master")
-public class RefreshController extends HttpServlet {
+@WebServlet("/master/refresh")
+public class MasterRefreshController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String nameOfMaster = req.getParameter("masters");
         int compilationStatus = Integer.parseInt(req.getParameter("compilationStatus"));
         int id = Integer.parseInt(req.getParameter("id"));
-        ImpRequestDAO.getInstance().changeMasterInRequest(id, nameOfMaster);
         ImpRequestDAO.getInstance().changeCompilationStatusInRequest(id, compilationStatus);
-        resp.sendRedirect(req.getContextPath() + "/manager/users/requests");
+        resp.sendRedirect(req.getContextPath() + "/table/requests");
     }
 }

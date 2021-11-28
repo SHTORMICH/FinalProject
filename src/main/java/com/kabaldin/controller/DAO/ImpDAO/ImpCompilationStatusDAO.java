@@ -16,7 +16,7 @@ import static com.kabaldin.controller.DAO.query.SQLQuery.CompilationStatusQuery.
 public class ImpCompilationStatusDAO implements CompilationStatusDAO {
     private final Connection connection = DBManager.getConnection();
     private static ImpCompilationStatusDAO compilationStatusDAO;
-    private final Logger logger = Logger.getLogger(ImpUserDAO.class.getName());
+    private final Logger logger = Logger.getLogger(ImpCompilationStatusDAO.class.getName());
 
     public static ImpCompilationStatusDAO getInstance() {
         if (compilationStatusDAO == null) {
