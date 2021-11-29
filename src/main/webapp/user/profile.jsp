@@ -13,8 +13,10 @@
 <head>
     <title>Profile</title>
 </head>
+<%--User info--%>
 <body>
 <a href="${pageContext.request.contextPath}/logout">LogOut</a>
+<h1>Profile</h1>
 <p>First Name: <c:out value="${user.firstName}"/></p>
 <p>Last name: <c:out value="${user.lastName}"/></p>
 <p>Username: <c:out value="${user.login}"/></p>
@@ -23,14 +25,102 @@
 <p>Account: <c:out value="${user.account}"/></p>
 <p><a href="${pageContext.request.contextPath}/user/account">Top up account</a></p>
 <p><a href="${pageContext.request.contextPath}/user/request">Creat request</a></p>
+
+<%--Search--%>
+<table>
+    <form action="${pageContext.request.contextPath}/user/profile" method="get">
+        <td>
+            <select name="mastersFilter">
+                <c:forEach var="name" items="${requestScope.masterNames}" step="1">
+                    <option value="${name.key}" ${name.key.equals(nameOfMasterFilter) ? 'selected="selected"' : ''}>${name.value}</option>
+                </c:forEach>
+            </select>
+        </td>
+
+        <td>
+            <select name="compilationStatusFilter">
+                <c:forEach var="compilationStatus" items="${requestScope.compilationStatus}" step="1">
+                    <option value="${compilationStatus.key}" ${compilationStatus.key == compilationStatusFilter ? 'selected' : ''}>${compilationStatus.value}</option>
+                </c:forEach>
+            </select>
+        </td>
+
+        <td>
+            <select name="paymentStatusFilter">
+                <c:forEach var="paymentStatus" items="${requestScope.paymentStatus}" step="1">
+                    <option value="${paymentStatus.key}" ${paymentStatus.key == paymentStatusFilter ? 'selected' : ''}>${paymentStatus.value}</option>
+                </c:forEach>
+            </select>
+        </td>
+        <td>
+            <button name="search">Search</button>
+        </td>
+    </form>
+    <form action="${pageContext.request.contextPath}/user/profile" method="get">
+        <td>
+            <button name="drop">Drop filter</button>
+        </td>
+    </form>
+</table>
+
+<%--User requests--%>
 <table>
     <thead>
     <tr>
-        <td>Id</td>
+        <form action="${pageContext.request.contextPath}/user/profile" method="get">
+            <input type="hidden" name="column" value="id">
+            <input type="hidden" name="mastersFilter" value="${nameOfMasterFilter}">
+            <input type="hidden" name="compilationStatusFilter" value="${compilationStatusFilter}">
+            <input type="hidden" name="paymentStatusFilter" value="${paymentStatusFilter}">
+
+            <c:choose>
+                <c:when test="${sortType == null || sortType == 'DESC'}">
+                    <input type="hidden" name="sortType" value="ASC">
+                </c:when>
+                <c:when test="${sortType == 'ASC'}">
+                    <input type="hidden" name="sortType" value="DESC">
+                </c:when>
+            </c:choose>
+            <td>
+                <button>Order</button>
+            </td>
+        </form>
         <td>Description</td>
         <td>Master</td>
-        <td>Date</td>
-        <td>Total cost</td>
+        <form action="${pageContext.request.contextPath}/user/profile" method="get">
+            <input type="hidden" name="column" value="date">
+            <input type="hidden" name="mastersFilter" value="${nameOfMasterFilter}">
+            <input type="hidden" name="compilationStatusFilter" value="${compilationStatusFilter}">
+            <input type="hidden" name="paymentStatusFilter" value="${paymentStatusFilter}">
+            <c:choose>
+                <c:when test="${sortType == null || sortType == 'DESC'}">
+                    <input type="hidden" name="sortType" value="ASC">
+                </c:when>
+                <c:when test="${sortType == 'ASC'}">
+                    <input type="hidden" name="sortType" value="DESC">
+                </c:when>
+            </c:choose>
+            <td>
+                <button>Date</button>
+            </td>
+        </form>
+        <form action="${pageContext.request.contextPath}/user/profile" method="get">
+            <input type="hidden" name="column" value="total_cost">
+            <input type="hidden" name="mastersFilter" value="${nameOfMasterFilter}">
+            <input type="hidden" name="compilationStatusFilter" value="${compilationStatusFilter}">
+            <input type="hidden" name="paymentStatusFilter" value="${paymentStatusFilter}">
+            <c:choose>
+                <c:when test="${sortType == null || sortType == 'DESC'}">
+                    <input type="hidden" name="sortType" value="ASC">
+                </c:when>
+                <c:when test="${sortType == 'ASC'}">
+                    <input type="hidden" name="sortType" value="DESC">
+                </c:when>
+            </c:choose>
+            <td>
+                <button>Total cost</button>
+            </td>
+        </form>
         <td>User</td>
         <td>Work status</td>
         <td>Payment status</td>
@@ -41,12 +131,23 @@
         <tr>
             <td><c:out value="${request.id}"/></td>
             <td><c:out value="${request.description}"/></td>
-            <td><c:out value="${request.master}"/></td>
+            <c:forEach var="nameMaster" items="${requestScope.masterNames}" step="1">
+                <c:if test="${request.master == nameMaster.key}">
+                    <td><c:out value="${nameMaster.value}"/></td>
+                </c:if>
+            </c:forEach>
             <td><c:out value="${request.date}"/></td>
             <td><c:out value="${request.totalCost}"/> грн.</td>
-            <td><c:out value="${request.userLogin}"/></td>
-            <td><c:out value="${request.compilationStatusId}"/></td>
-            <td><c:out value="${request.paymentStatusId}"/></td>
+            <c:forEach var="compilationStatus" items="${requestScope.compilationStatus}" step="1">
+                <c:if test="${request.compilationStatusId == compilationStatus.key}">
+                    <td><c:out value="${compilationStatus.value}"/></td>
+                </c:if>
+            </c:forEach>
+            <c:forEach var="paymentStatus" items="${requestScope.paymentStatus}" step="1">
+                <c:if test="${request.paymentStatusId == paymentStatus.key}">
+                    <td><c:out value="${paymentStatus.value}"/></td>
+                </c:if>
+            </c:forEach>
             <c:choose>
                 <c:when test="${request.paymentStatusId == 1}">
                     <form action="${pageContext.request.contextPath}/user/change/description" method="get">
@@ -86,5 +187,15 @@
     </c:forEach>
     </tbody>
 </table>
+<form action="${pageContext.request.contextPath}/user/profile">
+    <input type="hidden" name="offset" value="${offset}">
+    <input type="hidden" name="column" value="${column}">
+    <input type="hidden" name="sortType" value="${sortType}">
+    <input type="hidden" name="mastersFilter" value="${nameOfMasterFilter}">
+    <input type="hidden" name="compilationStatusFilter" value="${compilationStatusFilter}">
+    <input type="hidden" name="paymentStatusFilter" value="${paymentStatusFilter}">
+    <button name="prev" value="3">Prev</button>
+    <button name="next" value="3">Next</button>
+</form>
 </body>
 </html>

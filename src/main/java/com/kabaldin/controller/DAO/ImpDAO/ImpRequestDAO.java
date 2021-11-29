@@ -1,6 +1,6 @@
 package com.kabaldin.controller.DAO.ImpDAO;
 
-import com.kabaldin.controller.DAO.connection.DBManager;
+import com.kabaldin.controller.DAO.connection.ConnectionPool;
 import com.kabaldin.controller.DAO.RequestDAO;
 import com.kabaldin.controller.DAO.entity.Request;
 
@@ -8,10 +8,12 @@ import static com.kabaldin.controller.DAO.query.SQLQuery.RequestQuery.*;
 
 import java.sql.*;
 import java.util.*;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class ImpRequestDAO implements RequestDAO {
-    private final Connection connection = DBManager.getConnection();
+    ConnectionPool connectionPool = new ConnectionPool(2);
+    private final Connection connection = connectionPool.getConnection();
     private static ImpRequestDAO requestDAO;
     private final Logger logger = Logger.getLogger(ImpRequestDAO.class.getName());
 
@@ -67,7 +69,20 @@ public class ImpRequestDAO implements RequestDAO {
                 size = rs.getInt(1);
             }
         } catch (SQLException throwables) {
-            throwables.printStackTrace();
+            logger.log(Level.WARNING, "", throwables);
+        }
+        return size;
+    }
+
+    public int countAllRequestForUser(String login) {
+        int size = 0;
+        try (PreparedStatement ps = connection.prepareStatement(COUNT_ALL_REQUESTS)){
+            try (ResultSet rs = ps.executeQuery()){
+                rs.next();
+                size = rs.getInt(1);
+            }
+        } catch (SQLException throwables) {
+            logger.log(Level.WARNING, "", throwables);
         }
         return size;
     }
@@ -80,7 +95,7 @@ public class ImpRequestDAO implements RequestDAO {
                 requests = resultSetToRequestList(resultSet);
             }
         } catch (SQLException throwables) {
-            throwables.printStackTrace();
+            logger.log(Level.WARNING, "", throwables);
         }
         return requests;
     }
@@ -110,32 +125,41 @@ public class ImpRequestDAO implements RequestDAO {
                 requests = resultSetToRequestList(resultSet);
             }
         } catch (SQLException throwables) {
-            throwables.printStackTrace();
+            logger.log(Level.WARNING, "", throwables);
         }
         return requests;
     }
 
     @Override
-    public List<Request> getAllUsersRequestFilter(String column, String changer, String master, String compilationStatus, String paymentStatus, int limit, int offset) {
+    public List<Request> getAllUsersRequestFilter(String login, String column, String changer, String master, String compilationStatus, String paymentStatus, int limit, int offset) {
         List<Request> requests = null;
         StringBuilder query = new StringBuilder();
         query.append(SELECT_REQUEST_BY_FILTER);
-        if (master != null && !master.equals("") ||
+        if (login != null || master != null && !master.equals("") ||
                 compilationStatus != null && !compilationStatus.equals("") ||
                 paymentStatus != null && !paymentStatus.equals("")) {
-            query.append(" WHERE ");
-            if (master != null) {
+            query.append(" WHERE");
+            if (login != null) {
+                query.append(" user_login=")
+                        .append("\'")
+                        .append(login)
+                        .append("\'");
+            }
+            if (login != null && master != null && !master.equals("")) {
+                query.append(" AND");
+            }
+            if (master != null && !master.equals("")) {
                 query.append(" master=")
                         .append("\'")
                         .append(master)
                         .append("\'");
             }
-            if (compilationStatus != null) {
+            if (compilationStatus != null && !compilationStatus.equals("")) {
                 query.append(" AND")
                         .append(" compilation_status_id=")
                         .append(Integer.parseInt(compilationStatus.replaceAll("\\s+","")));
             }
-            if (paymentStatus != null) {
+            if (paymentStatus != null && !paymentStatus.equals("")) {
                 query.append(" AND")
                         .append(" payment_status_id=")
                         .append(Integer.parseInt(paymentStatus.replaceAll("\\s+","")));
@@ -146,7 +170,6 @@ public class ImpRequestDAO implements RequestDAO {
                     .append(column)
                     .append(" ")
                     .append(changer);
-
         }
         query.append(" LIMIT ")
                 .append(limit)
@@ -158,7 +181,7 @@ public class ImpRequestDAO implements RequestDAO {
                 requests = resultSetToRequestList(rs);
             }
         } catch (SQLException throwables) {
-            throwables.printStackTrace();
+            logger.log(Level.WARNING, "", throwables);
         }
         return requests;
     }
@@ -252,12 +275,10 @@ public class ImpRequestDAO implements RequestDAO {
         }
     }
 
-
-
     public static void main(String[] args) {
         ImpRequestDAO requestDAO = new ImpRequestDAO();
         StringBuilder result = new StringBuilder();
-        List<Request> requestList = requestDAO.getAllUsersRequestFilter(null, null, null, null, null, 3, 3);
+        List<Request> requestList = requestDAO.getAllUsersRequestFilter(null,null, null, null, null, null, 3, 3);
         for (Request el:requestList) {
             result.append(el.getId())
                     .append(" ")

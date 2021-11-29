@@ -1,5 +1,6 @@
 package com.kabaldin.controller.servlets.manager;
 
+import com.kabaldin.controller.DAO.ImpDAO.ImpRoleDAO;
 import com.kabaldin.controller.DAO.ImpDAO.ImpUserDAO;
 import com.kabaldin.controller.DAO.entity.User;
 
@@ -10,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 @WebServlet("/manager/users")
 public class UsersController extends HttpServlet {
@@ -18,12 +20,11 @@ public class UsersController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         List<User> users = ImpUserDAO.getInstance().getAllUsers();
+        Map<Integer, String> roles = ImpRoleDAO.getInstance().getAllRoles();
+        req.setAttribute("roles", roles);
         req.setAttribute("users", users);
         getServletContext().getRequestDispatcher("/manager/users.jsp").forward(req, resp);
+
     }
 
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doPost(req, resp);
-    }
 }

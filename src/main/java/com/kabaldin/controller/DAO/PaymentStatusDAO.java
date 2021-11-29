@@ -4,5 +4,5 @@ import java.util.Map;
 
 public interface PaymentStatusDAO {
 
-    public Map<Integer, String> chooseAllPaymentStatus();
+    public Map<Integer, String> getAllPaymentStatus();
 }

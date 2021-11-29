@@ -29,16 +29,16 @@ public class UsersRequestsController extends HttpServlet {
         String paymentStatusFilter = req.getParameter("paymentStatusFilter");
         int amountRequestsInDB = ImpRequestDAO.getInstance().countAllRequest();
 
-        if (prev != 0 && offset - prev > 0) {
+        if (prev != 0 && offset - prev >= 0) {
             offset -= prev;
         } else if (next != 0 && offset + next < amountRequestsInDB) {
             offset += next;
         }
-        List<Request> requests = ImpRequestDAO.getInstance().getAllUsersRequestFilter(column, sortType, nameOfMasterFilter, compilationStatusFilter, paymentStatusFilter, 3, offset);
+        List<Request> requests = ImpRequestDAO.getInstance().getAllUsersRequestFilter(null, column, sortType, nameOfMasterFilter, compilationStatusFilter, paymentStatusFilter, 3, offset);
 
         Map<String, String> mastersNames = ImpUserDAO.getInstance().getAllMasters();
-        Map<Integer, String> compilationStatuses = ImpCompilationStatusDAO.getInstance().chooseAllCompilationStatus();
-        Map<Integer, String> paymentStatuses = ImpPaymentStatusDAO.getInstance().chooseAllPaymentStatus();
+        Map<Integer, String> compilationStatuses = ImpCompilationStatusDAO.getInstance().getAllCompilationStatus();
+        Map<Integer, String> paymentStatuses = ImpPaymentStatusDAO.getInstance().getAllPaymentStatus();
         req.setAttribute("requests", requests);
         req.setAttribute("sortType", sortType);
         req.setAttribute("column", column);

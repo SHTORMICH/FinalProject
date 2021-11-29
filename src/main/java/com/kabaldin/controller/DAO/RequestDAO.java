@@ -16,11 +16,13 @@ public interface RequestDAO {
 
     public int countAllRequest();
 
+    public int countAllRequestForUser(String login);
+
     public List<Request> getAllUsersRequest();
 
     //public List<Request> getAllUsersRequestByColumn(String column);
 
-    public List<Request> getAllUsersRequestFilter(String column, String changer, String master, String compilationStatus, String paymentStatus, int limit, int offset);
+    public List<Request> getAllUsersRequestFilter(String login, String column, String changer, String master, String compilationStatus, String paymentStatus, int limit, int offset);
 
     public boolean changeDescription(int id, String description);
 

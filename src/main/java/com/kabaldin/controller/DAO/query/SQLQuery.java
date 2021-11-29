@@ -47,8 +47,8 @@ public abstract class SQLQuery {
         public static final String SELECT_ALL_PAYMENT_STATUS = "SELECT * FROM payment_status;";
     }
 
-    static class RoleQuery {
-        public final String SELECT_ALL_ROLE = "SELECT * FROM role";
+    public static class RoleQuery {
+        public static final String SELECT_ALL_ROLE = "SELECT id, role FROM role";
     }
 
 }

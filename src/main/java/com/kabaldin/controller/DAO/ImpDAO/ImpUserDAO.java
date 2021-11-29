@@ -1,6 +1,6 @@
 package com.kabaldin.controller.DAO.ImpDAO;
 
-import com.kabaldin.controller.DAO.connection.DBManager;
+import com.kabaldin.controller.DAO.connection.ConnectionPool;
 import com.kabaldin.controller.DAO.UserDAO;
 import com.kabaldin.controller.DAO.entity.User;
 
@@ -16,7 +16,8 @@ import java.util.regex.Pattern;
 import static com.kabaldin.controller.DAO.query.SQLQuery.UserQuery.*;
 
 public class ImpUserDAO implements UserDAO {
-    private final Connection connection = DBManager.getConnection();
+    ConnectionPool connectionPool = new ConnectionPool(2);
+    private Connection connection = connectionPool.getConnection();
     private static ImpUserDAO userDao;
     private final Logger logger = Logger.getLogger(ImpUserDAO.class.getName());
 
@@ -118,7 +119,7 @@ public class ImpUserDAO implements UserDAO {
 
     @Override
     public User getUserByLoginAndPassword(String login, String password) {
-        Optional<User> user = Optional.ofNullable(ImpUserDAO.userDao.getUserByLogin(login));
+        Optional<User> user = Optional.ofNullable(ImpUserDAO.getInstance().getUserByLogin(login));
         if (user.isPresent() && user.get().getPassword().equals(password)) {
             return user.get();
         }
@@ -153,7 +154,7 @@ public class ImpUserDAO implements UserDAO {
         try (PreparedStatement ps = connection.prepareStatement(SELECT_USER_BY_LOGIN)) {
             ps.setString(1, login);
             try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
+                while (rs.next()) {
                     user.setLogin(rs.getString("login"));
                     user.setEmail(rs.getString("email"));
                     user.setPassword(rs.getString("password"));
@@ -210,6 +211,7 @@ public class ImpUserDAO implements UserDAO {
 
     public static void main(String[] args) {
         ImpUserDAO userDao = new ImpUserDAO();
-        System.out.println(userDao.getAllMasters());
+        User user = userDao.getUserByLoginAndPassword("MainManeger", "12345");
+        System.out.println(user.getPassword());
     }
 }

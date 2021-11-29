@@ -1,7 +1,7 @@
 package com.kabaldin.controller.DAO.ImpDAO;
 
 import com.kabaldin.controller.DAO.FeedbackDAO;
-import com.kabaldin.controller.DAO.connection.DBManager;
+import com.kabaldin.controller.DAO.connection.ConnectionPool;
 
 import java.sql.*;
 import java.util.logging.Logger;
@@ -9,7 +9,8 @@ import java.util.logging.Logger;
 import static com.kabaldin.controller.DAO.query.SQLQuery.FeedbackQuery.*;
 
 public class ImpFeedbackDAO implements FeedbackDAO {
-    private final Connection connection = DBManager.getConnection();
+    ConnectionPool connectionPool = new ConnectionPool(2);
+    private final Connection connection = connectionPool.getConnection();
     private static ImpFeedbackDAO feedbackDAO;
     private final Logger logger = Logger.getLogger(ImpUserDAO.class.getName());
 

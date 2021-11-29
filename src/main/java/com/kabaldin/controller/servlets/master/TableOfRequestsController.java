@@ -1,6 +1,7 @@
 package com.kabaldin.controller.servlets.master;
 
 import com.kabaldin.controller.DAO.ImpDAO.ImpCompilationStatusDAO;
+import com.kabaldin.controller.DAO.ImpDAO.ImpPaymentStatusDAO;
 import com.kabaldin.controller.DAO.ImpDAO.ImpRequestDAO;
 import com.kabaldin.controller.DAO.entity.Request;
 
@@ -23,9 +24,11 @@ public class TableOfRequestsController extends HttpServlet {
         HttpSession session = req.getSession();
         String login = (String) session.getAttribute(LOGIN);
 
-        Map<Integer, String> compilationStatuses = ImpCompilationStatusDAO.getInstance().chooseAllCompilationStatus();
+        Map<Integer, String> compilationStatuses = ImpCompilationStatusDAO.getInstance().getAllCompilationStatus();
+        Map<Integer, String> paymentStatus = ImpPaymentStatusDAO.getInstance().getAllPaymentStatus();
         List<Request> requests = ImpRequestDAO.getInstance().getAllUsersRequestForMaster(login);
         req.setAttribute("compilationStatuses", compilationStatuses);
+        req.setAttribute("paymentStatus", paymentStatus);
         req.setAttribute("requests", requests);
         getServletContext().getRequestDispatcher("/master/tabla_requests.jsp").forward(req, resp);
     }

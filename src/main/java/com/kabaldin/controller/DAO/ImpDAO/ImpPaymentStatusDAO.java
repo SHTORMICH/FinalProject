@@ -1,7 +1,7 @@
 package com.kabaldin.controller.DAO.ImpDAO;
 
 import com.kabaldin.controller.DAO.PaymentStatusDAO;
-import com.kabaldin.controller.DAO.connection.DBManager;
+import com.kabaldin.controller.DAO.connection.ConnectionPool;
 import com.kabaldin.controller.DAO.entity.PaymentStatus;
 
 import java.sql.Connection;
@@ -15,7 +15,8 @@ import java.util.logging.Logger;
 import static com.kabaldin.controller.DAO.query.SQLQuery.PaymentStatusQuery.*;
 
 public class ImpPaymentStatusDAO implements PaymentStatusDAO {
-    private final Connection connection = DBManager.getConnection();
+    ConnectionPool connectionPool = new ConnectionPool(2);
+    private final Connection connection = connectionPool.getConnection();
     private static ImpPaymentStatusDAO paymentStatusDAO;
     private final Logger logger = Logger.getLogger(ImpPaymentStatusDAO.class.getName());
 
@@ -27,7 +28,7 @@ public class ImpPaymentStatusDAO implements PaymentStatusDAO {
     }
 
     @Override
-    public Map<Integer, String> chooseAllPaymentStatus() {
+    public Map<Integer, String> getAllPaymentStatus() {
         Map<Integer, String> status = new HashMap<>();
         try (PreparedStatement ps = connection.prepareStatement(SELECT_ALL_PAYMENT_STATUS)) {
             try (ResultSet rs = ps.executeQuery()) {
@@ -45,7 +46,7 @@ public class ImpPaymentStatusDAO implements PaymentStatusDAO {
     }
 
     public static void main(String[] args) {
-        Map<Integer, String> paymentStatus = ImpPaymentStatusDAO.getInstance().chooseAllPaymentStatus();
+        Map<Integer, String> paymentStatus = ImpPaymentStatusDAO.getInstance().getAllPaymentStatus();
         System.out.println(paymentStatus.get(1));
         System.out.println(paymentStatus.get(2));
 

@@ -4,7 +4,6 @@ import java.util.Map;
 
 public interface CompilationStatusDAO {
 
-    public Map<Integer, String> chooseAllCompilationStatus();
-
+    public Map<Integer, String> getAllCompilationStatus();
 
 }
