@@ -5,29 +5,52 @@
   Time: 22:04
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page pageEncoding="UTF-8" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<c:set var="language" value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}" scope="session" />
+<fmt:setLocale value="${language}" />
+<fmt:setBundle basename="local"/>
+
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>User Form</title>
+    <fmt:message key="registration.title" var="title"/>
+    <title>${title}</title>
 </head>
 <body>
-<h1>Registration</h1><br>
-<form action="${pageContext.request.contextPath}/registration" method="POST">
-    login: <input name="login" required/>
-    <br><br>
-    email: <input name="email" required/>
-    <br><br>
-    password: <input name="password" required/>
-    <br><br>
-    firstName: <input name="firstName" required/>
-    <br><br>
-    lastName: <input name="lastName" required/>
-    <br><br>
-    phoneNumber: <input name="phoneNumber" required/>
-    <br><br>
-    <input type="submit" value="Submit" required/>
+<form action="${pageContext.request.contextPath}/registration" method="get">
+    <select id="language" name="language" onchange="submit()">
+        <option value="en" ${language == 'en' ? 'selected' : ''}>En</option>
+        <option value="ru" ${language == 'ru' ? 'selected' : ''}>Ru</option>
+    </select>
 </form>
-<a href="${pageContext.request.contextPath}/login">LogIn</a>
+<fmt:message key="registration.headReg" var="headReg"/>
+<h1>${headReg}</h1><br>
+<form action="${pageContext.request.contextPath}/registration" method="POST">
+    <fmt:message key="registration.login" var="login"/>
+    ${login}: <input name="login" required/>
+    <br><br>
+    <fmt:message key="registration.email" var="email"/>
+    ${email}: <input name="email" required/>
+    <br><br>
+    <fmt:message key="registration.password" var="password"/>
+    ${password}: <input name="password" required/>
+    <br><br>
+    <fmt:message key="registration.firstName" var="firstName"/>
+    ${firstName}: <input name="firstName" required/>
+    <br><br>
+    <fmt:message key="registration.lastName" var="lastName"/>
+    ${lastName}: <input name="lastName" required/>
+    <br><br>
+    <fmt:message key="registration.phoneNumber" var="phoneNumber"/>
+    ${phoneNumber}: <input name="phoneNumber" required/>
+    <br><br>
+    <fmt:message key="registration.submit" var="submit"/>
+    <input type="submit" value="${submit}" required/>
+</form>
+<fmt:message key="registration.logIn" var="logIn"/>
+<a href="${pageContext.request.contextPath}/login">${logIn}</a>
 </body>
 </html>

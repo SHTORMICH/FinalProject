@@ -15,14 +15,15 @@ import java.util.Map;
 
 @WebServlet("/manager/users")
 public class UsersController extends HttpServlet {
-    private static final String LOGIN = "login";
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String language = req.getParameter("language");
         List<User> users = ImpUserDAO.getInstance().getAllUsers();
         Map<Integer, String> roles = ImpRoleDAO.getInstance().getAllRoles();
         req.setAttribute("roles", roles);
         req.setAttribute("users", users);
+        req.setAttribute("language", language);
         getServletContext().getRequestDispatcher("/manager/users.jsp").forward(req, resp);
 
     }

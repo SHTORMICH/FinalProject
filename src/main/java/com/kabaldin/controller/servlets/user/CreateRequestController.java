@@ -17,6 +17,8 @@ public class CreateRequestController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String language = req.getParameter("language");
+        req.setAttribute("language", language);
         req.getRequestDispatcher("/user/request.jsp").forward(req, resp);
     }
 

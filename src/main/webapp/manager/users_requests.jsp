@@ -6,13 +6,27 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
+<%@ page pageEncoding="UTF-8" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<c:set var="language" value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}" scope="session" />
+<fmt:setLocale value="${language}" />
+<fmt:setBundle basename="local"/>
+
+<html >
 <head>
-    <title>Users requests</title>
+    <fmt:message key="manager.users_requests.title" var="title"/>
+    <title>${title}</title>
 </head>
 <body>
-<h1>Users requests</h1>
+<form action="${pageContext.request.contextPath}/manager/users/requests" method="get">
+    <select id="language" name="language" onchange="submit()">
+        <option value="en" ${language == 'en' ? 'selected' : ''}>En</option>
+        <option value="ru" ${language == 'ru' ? 'selected' : ''}>Ru</option>
+    </select>
+</form>
+<fmt:message key="manager.users_requests.headUR" var="headUR"/>
+<h1>${headUR}</h1>
 <p><a href="${pageContext.request.contextPath}/logout">LogOut</a></p>
 <p><a href="${pageContext.request.contextPath}/manager/users">Users</a></p>
 <%--Request table filters--%>
@@ -42,12 +56,14 @@
             </select>
         </td>
         <td>
-            <button name="search">Search</button>
+            <fmt:message key="manager.users_requests.search" var="search"/>
+            <button name="search">${search}</button>
         </td>
     </form>
     <form action="${pageContext.request.contextPath}/manager/users/requests" method="get">
         <td>
-            <button name="drop">Drop filter</button>
+            <fmt:message key="manager.users_requests.drop" var="drop"/>
+            <button name="drop">${drop}</button>
         </td>
     </form>
 </table>
@@ -70,11 +86,14 @@
                 </c:when>
             </c:choose>
             <td>
-                <button>Order</button>
+                <fmt:message key="manager.users_requests.order" var="order"/>
+                <button>${order}</button>
             </td>
         </form>
-        <td>User</td>
-        <td>Description</td>
+        <fmt:message key="manager.users_requests.user" var="user"/>
+        <td>${user}</td>
+        <fmt:message key="manager.users_requests.description" var="description"/>
+        <td>${description}</td>
         <form action="${pageContext.request.contextPath}/manager/users/requests" method="get">
             <input type="hidden" name="column" value="total_cost">
             <input type="hidden" name="mastersFilter" value="${nameOfMasterFilter}">
@@ -89,12 +108,16 @@
                 </c:when>
             </c:choose>
             <td>
-                <button>Total cost</button>
+                <fmt:message key="manager.users_requests.total_cost" var="total_cost"/>
+                <button>${total_cost}</button>
             </td>
         </form>
-        <td>Master</td>
-        <td>Work status</td>
-        <td>Payment status</td>
+        <fmt:message key="manager.users_requests.master" var="master"/>
+        <td>${master}</td>
+        <fmt:message key="manager.users_requests.work_status" var="work_status"/>
+        <td>${work_status}</td>
+        <fmt:message key="manager.users_requests.payment_status" var="payment_status"/>
+        <td>${payment_status}</td>
         <form action="${pageContext.request.contextPath}/manager/users/requests" method="get">
             <input type="hidden" name="column" value="date">
             <input type="hidden" name="mastersFilter" value="${nameOfMasterFilter}">
@@ -109,7 +132,8 @@
                 </c:when>
             </c:choose>
             <td>
-                <button>Date</button>
+                <fmt:message key="manager.users_requests.date" var="date"/>
+                <button>${date}</button>
             </td>
         </form>
     </tr>
@@ -155,15 +179,17 @@
                 <td><c:out value="${request.date}"/></td>
 
                 <td>
-                    <button name="refresh">Refresh</button>
+                    <fmt:message key="manager.users_requests.refresh" var="refresh"/>
+                    <button name="refresh">${refresh}</button>
                 </td>
 
             </form>
 
             <td>
                 <form action="${pageContext.request.contextPath}/manager/change/totalCost" method="get">
-                    <button name="totalCost">Edit total cost</button>
                     <input type="hidden" name="id" value="${request.id}">
+                    <fmt:message key="manager.users_requests.edit_total_cost" var="edit_total_cost"/>
+                    <button name="totalCost">${edit_total_cost}</button>
                 </form>
             </td>
         </tr>
@@ -177,8 +203,10 @@
     <input type="hidden" name="mastersFilter" value="${nameOfMasterFilter}">
     <input type="hidden" name="compilationStatusFilter" value="${compilationStatusFilter}">
     <input type="hidden" name="paymentStatusFilter" value="${paymentStatusFilter}">
-    <button name="prev" value="3">Prev</button>
-    <button name="next" value="3">Next</button>
+    <fmt:message key="manager.users_requests.prev" var="prev"/>
+    <button name="prev" value="3">${prev}</button>
+    <fmt:message key="manager.users_requests.next" var="next"/>
+    <button name="next" value="3">${next}</button>
 </form>
 </body>
 </html>

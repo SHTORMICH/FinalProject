@@ -15,8 +15,10 @@ public class ChangeUserAccountController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String language = req.getParameter("language");
         String login = req.getParameter(LOGIN);
         req.setAttribute(LOGIN, login);
+        req.setAttribute("language", language);
         req.getRequestDispatcher("/manager/user_account.jsp").forward(req, resp);
     }
 

@@ -15,6 +15,8 @@ public class RegistrationController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String language = req.getParameter("language");
+        req.setAttribute("language", language);
         req.getRequestDispatcher("/registration.jsp").forward(req, resp);
     }
 
@@ -31,7 +33,9 @@ public class RegistrationController extends HttpServlet {
 
         User user = new User(login, email, password, firstName, lastName, phoneNumber);
         ImpUserDAO.getInstance().saveUser(user);
+
         req.getSession().setAttribute("user", user);
+
         resp.sendRedirect(req.getContextPath() + "/login");
     }
 }

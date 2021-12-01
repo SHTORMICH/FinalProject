@@ -14,9 +14,11 @@ public class ChangeDescriptionController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String language = req.getParameter("language");
         String id = req.getParameter("id");
         req.setAttribute("id", id);
         req.getRequestDispatcher("/user/change_description.jsp").forward(req, resp);
+        req.setAttribute("language", language);
     }
 
     @Override

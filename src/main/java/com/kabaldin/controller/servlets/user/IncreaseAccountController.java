@@ -26,6 +26,7 @@ public class IncreaseAccountController extends HttpServlet {
         String login = (String) session.getAttribute(LOGIN);
         int account = Integer.parseInt(req.getParameter("account"));
         ImpUserDAO.getInstance().updateUserAccountByLogin(account, login);
+        req.setAttribute("account", account);
         resp.sendRedirect(req.getContextPath() + "/user/profile");
     }
 }

@@ -14,8 +14,10 @@ import java.io.IOException;
 public class LeaveFeedbackController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String language = req.getParameter("language");
         String id = req.getParameter("id");
         String loginMaster = req.getParameter("loginMaster");
+        req.setAttribute("language", language);
         req.setAttribute("id", id);
         req.setAttribute("loginMaster", loginMaster);
         req.getRequestDispatcher("/user/feedback.jsp").forward(req, resp);

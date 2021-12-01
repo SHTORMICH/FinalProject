@@ -23,6 +23,7 @@ public class ProfileController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String language = req.getParameter("language");
         String column = req.getParameter("column");
         String sortType = req.getParameter("sortType");
         int prev = tryParse(req.getParameter("prev"));
@@ -48,7 +49,7 @@ public class ProfileController extends HttpServlet {
         Map<Integer, String> compilationStatus = ImpCompilationStatusDAO.getInstance().getAllCompilationStatus();
         Map<Integer, String> paymentStatus = ImpPaymentStatusDAO.getInstance().getAllPaymentStatus();
 
-
+        req.setAttribute("language", language);
         req.setAttribute("user", user);
         req.setAttribute("masterNames", masterNames);
         req.setAttribute("compilationStatus", compilationStatus);

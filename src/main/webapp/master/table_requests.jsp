@@ -6,24 +6,46 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page pageEncoding="UTF-8" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<c:set var="language" value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}" scope="session" />
+<fmt:setLocale value="${language}" />
+<fmt:setBundle basename="local"/>
+
 <html>
 <head>
-    <title>Table</title>
+    <fmt:message key="master.table_requests.title" var="title"/>
+    <title>${title}</title>
 </head>
 <body>
-<a href="${pageContext.request.contextPath}/logout">LogOut</a>
-<h1>Table of requests</h1>
+<form action="${pageContext.request.contextPath}/table/requests" method="get">
+    <select id="language" name="language" onchange="submit()">
+        <option value="en" ${language == 'en' ? 'selected' : ''}>En</option>
+        <option value="ru" ${language == 'ru' ? 'selected' : ''}>Ru</option>
+    </select>
+</form>
+<fmt:message key="master.table_requests.logout" var="logout"/>
+<a href="${pageContext.request.contextPath}/logout">${logout}</a>
+<fmt:message key="master.table_requests.head" var="head"/>
+<h1>${head}</h1>
 <table>
     <thead>
     <tr>
-        <td>Id</td>
-        <td>User</td>
-        <td>Description</td>
-        <td>Total cost</td>
-        <td>Date</td>
-        <td>Payment status</td>
-        <td>Work status</td>
+        <fmt:message key="master.table_requests.id" var="id"/>
+        <td>${id}</td>
+        <fmt:message key="master.table_requests.user" var="user"/>
+        <td>${user}</td>
+        <fmt:message key="master.table_requests.description" var="description"/>
+        <td>${description}</td>
+        <fmt:message key="master.table_requests.total_cost" var="total_cost"/>
+        <td>${total_cost}</td>
+        <fmt:message key="master.table_requests.date" var="date"/>
+        <td>${date}</td>
+        <fmt:message key="master.table_requests.payment_status" var="payment_status"/>
+        <td>${payment_status}</td>
+        <fmt:message key="master.table_requests.work_status" var="work_status"/>
+        <td>${work_status}</td>
     </tr>
     </thead>
     <tbody>
@@ -67,7 +89,8 @@
                             </select>
                         </td>
                         <td>
-                            <button name="refresh">Refresh</button>
+                            <fmt:message key="master.table_requests.refresh" var="refresh"/>
+                            <button name="refresh">${refresh}</button>
                         </td>
                     </c:when>
                 </c:choose>
@@ -76,7 +99,8 @@
                 <td>
                     <c:if test="${request.master.equals(\"Not assigned\")}">
                         <input type="hidden" name="id" value="${request.id}">
-                        <button>Choose</button>
+                        <fmt:message key="master.table_requests.choose" var="choose"/>
+                        <button>${choose}</button>
                     </c:if>
                 </td>
             </form>

@@ -6,26 +6,48 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page isELIgnored="false" %>
+<%@ page pageEncoding="UTF-8" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<c:set var="language" value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}" scope="session" />
+<fmt:setLocale value="${language}" />
+<fmt:setBundle basename="local"/>
 
 <html>
 <head>
-    <title>Profile</title>
+    <fmt:message key="user.header" var="header"/>
+    <title>${header}</title>
 </head>
 <%--User info--%>
 <body>
+<form action="${pageContext.request.contextPath}/user/profile" method="get">
+    <select id="language" name="language" onchange="submit()">
+        <option value="en" ${language == 'en' ? 'selected' : ''}>En</option>
+        <option value="ru" ${language == 'ru' ? 'selected' : ''}>Ru</option>
+    </select>
+</form>
 <a href="${pageContext.request.contextPath}/logout">LogOut</a>
-<h1>Profile</h1>
-<p>First Name: <c:out value="${user.firstName}"/></p>
-<p>Last name: <c:out value="${user.lastName}"/></p>
-<p>Username: <c:out value="${user.login}"/></p>
-<p>Email: <c:out value="${user.email}"/></p>
-<p>Phone number: <c:out value="${user.phoneNumber}"/></p>
-<p>Account: <c:out value="${user.account}"/></p>
-<p><a href="${pageContext.request.contextPath}/user/account">Top up account</a></p>
-<p><a href="${pageContext.request.contextPath}/user/request">Creat request</a></p>
+<fmt:message key="user.your_profile" var="your_profile"/>
+<h1>${your_profile}</h1>
+<fmt:message key="user.firstName" var="firstName"/>
+<p>${firstName}: <c:out value="${user.firstName}"/></p>
+<fmt:message key="user.lastName" var="lastName"/>
+<p>${lastName}: <c:out value="${user.lastName}"/></p>
+<fmt:message key="user.login" var="login"/>
+<p>${login}: <c:out value="${user.login}"/></p>
+<fmt:message key="user.email" var="email"/>
+<p>${email}: <c:out value="${user.email}"/></p>
+<fmt:message key="user.phoneNumber" var="phoneNumber"/>
+<p>${phoneNumber}: <c:out value="${user.phoneNumber}"/></p>
+<fmt:message key="user.account" var="account"/>
+<p>${account}: <c:out value="${user.account}"/>
+    <fmt:message key="user.top_up_account" var="top_up_account"/>
+    <a href="${pageContext.request.contextPath}/user/account">${top_up_account}</a></p>
 
+<fmt:message key="user.your_requests" var="your_requests"/>
+<h1>${your_requests}</h1>
+<fmt:message key="user.create_request" var="create_request"/>
+<p><a href="${pageContext.request.contextPath}/user/request">${create_request}</a></p>
 <%--Search--%>
 <table>
     <form action="${pageContext.request.contextPath}/user/profile" method="get">
@@ -53,12 +75,14 @@
             </select>
         </td>
         <td>
-            <button name="search">Search</button>
+            <fmt:message key="user.search" var="search"/>
+            <button name="search">${search}</button>
         </td>
     </form>
     <form action="${pageContext.request.contextPath}/user/profile" method="get">
         <td>
-            <button name="drop">Drop filter</button>
+            <fmt:message key="user.drop_filter" var="drop_filter"/>
+            <button name="drop">${drop_filter}</button>
         </td>
     </form>
 </table>
@@ -82,11 +106,14 @@
                 </c:when>
             </c:choose>
             <td>
-                <button>Order</button>
+                <fmt:message key="user.order" var="order"/>
+                <button>${order}</button>
             </td>
         </form>
-        <td>Description</td>
-        <td>Master</td>
+        <fmt:message key="user.description" var="description"/>
+        <td>${description}</td>
+        <fmt:message key="user.master" var="master"/>
+        <td>${master}</td>
         <form action="${pageContext.request.contextPath}/user/profile" method="get">
             <input type="hidden" name="column" value="date">
             <input type="hidden" name="mastersFilter" value="${nameOfMasterFilter}">
@@ -101,7 +128,8 @@
                 </c:when>
             </c:choose>
             <td>
-                <button>Date</button>
+                <fmt:message key="user.date" var="date"/>
+                <button>${date}</button>
             </td>
         </form>
         <form action="${pageContext.request.contextPath}/user/profile" method="get">
@@ -118,12 +146,16 @@
                 </c:when>
             </c:choose>
             <td>
-                <button>Total cost</button>
+                <fmt:message key="user.total_cost" var="total_cost"/>
+                <button>${total_cost}</button>
             </td>
         </form>
-        <td>User</td>
-        <td>Work status</td>
-        <td>Payment status</td>
+        <fmt:message key="user.user" var="user"/>
+        <td>${user}</td>
+        <fmt:message key="user.work_status" var="work_status"/>
+        <td>${work_status}</td>
+        <fmt:message key="user.payment_status" var="payment_status"/>
+        <td>${payment_status}</td>
     </tr>
     </thead>
     <tbody>
@@ -153,7 +185,8 @@
                     <form action="${pageContext.request.contextPath}/user/change/description" method="get">
                         <td>
                             <input type="hidden" name="id" value="${request.id}">
-                            <button name="changeDescrip">Change description</button>
+                            <fmt:message key="user.change_description" var="change_description"/>
+                            <button name="changeDescrip">${change_description}</button>
                         </td>
                     </form>
 
@@ -163,13 +196,15 @@
                             <input type="hidden" name="totalCost" value="${request.totalCost}">
                             <input type="hidden" name="userLogin" value="${request.userLogin}">
                             <input type="hidden" name="account" value="${user.account}">
-                            <button name="pay">Pay</button>
+                            <fmt:message key="user.pay" var="pay"/>
+                            <button name="pay">${pay}</button>
                         </td>
                     </form>
                     <form action="${pageContext.request.contextPath}/user/cancel" method="post">
                         <td>
                             <input type="hidden" name="id" value="${request.id}">
-                            <button name="cancel">Cancel</button>
+                            <fmt:message key="user.cancel" var="cancel"/>
+                            <button name="cancel">${cancel}</button>
                         </td>
                     </form>
                 </c:when>
@@ -178,7 +213,8 @@
                         <td>
                             <input type="hidden" name="id" value="${request.id}">
                             <input type="hidden" name="loginMaster" value="${request.master}">
-                            <button name="feedback">Feedback</button>
+                            <fmt:message key="user.feedback" var="feedback"/>
+                            <button name="feedback">${feedback}</button>
                         </td>
                     </form>
                 </c:when>
@@ -194,8 +230,10 @@
     <input type="hidden" name="mastersFilter" value="${nameOfMasterFilter}">
     <input type="hidden" name="compilationStatusFilter" value="${compilationStatusFilter}">
     <input type="hidden" name="paymentStatusFilter" value="${paymentStatusFilter}">
-    <button name="prev" value="3">Prev</button>
-    <button name="next" value="3">Next</button>
+    <fmt:message key="user.prev" var="prev"/>
+    <button name="prev" value="3">${prev}</button>
+    <fmt:message key="user.next" var="next"/>
+    <button name="next" value="3">${next}</button>
 </form>
 </body>
 </html>

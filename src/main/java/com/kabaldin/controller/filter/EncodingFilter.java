@@ -7,10 +7,8 @@ public class EncodingFilter implements Filter {
     private String encoding;
 
     public void init(FilterConfig config) throws ServletException {
-        // читаем из конфигурации
         encoding = config.getInitParameter("requestEncoding");
 
-        // если не установлена — устанавливаем UTF-8
         if (encoding == null) encoding = "UTF-8";
     }
 

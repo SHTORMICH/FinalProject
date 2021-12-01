@@ -15,16 +15,20 @@ public class ChangeTotalCostController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String language = req.getParameter("language");
         int id = Integer.parseInt(req.getParameter("id"));
+        req.setAttribute("language", language);
         req.setAttribute("id", id);
         req.getRequestDispatcher("/manager/total_cost.jsp").forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String language = req.getParameter("language");
         int id = Integer.parseInt(req.getParameter("id"));
         int totalCost = Integer.parseInt(req.getParameter("totalCost"));
         ImpRequestDAO.getInstance().changeTotalCost(id, totalCost);
+        req.setAttribute("language", language);
         resp.sendRedirect(req.getContextPath() + "/manager/users/requests");
     }
 }

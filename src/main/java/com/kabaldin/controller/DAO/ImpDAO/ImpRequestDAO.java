@@ -294,7 +294,6 @@ public class ImpRequestDAO implements RequestDAO {
                     .append(" ")
                     .append(el.getDate())
                     .append(System.lineSeparator());
-
         }
         System.out.println(result);
     }

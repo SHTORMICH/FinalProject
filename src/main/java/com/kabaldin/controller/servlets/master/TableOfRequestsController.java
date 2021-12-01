@@ -23,13 +23,17 @@ public class TableOfRequestsController extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
         String login = (String) session.getAttribute(LOGIN);
+        String language = req.getParameter("language");
 
         Map<Integer, String> compilationStatuses = ImpCompilationStatusDAO.getInstance().getAllCompilationStatus();
         Map<Integer, String> paymentStatus = ImpPaymentStatusDAO.getInstance().getAllPaymentStatus();
         List<Request> requests = ImpRequestDAO.getInstance().getAllUsersRequestForMaster(login);
+
+        req.setAttribute("language", language);
         req.setAttribute("compilationStatuses", compilationStatuses);
         req.setAttribute("paymentStatus", paymentStatus);
         req.setAttribute("requests", requests);
-        getServletContext().getRequestDispatcher("/master/tabla_requests.jsp").forward(req, resp);
+
+        getServletContext().getRequestDispatcher("/master/table_requests.jsp").forward(req, resp);
     }
 }
