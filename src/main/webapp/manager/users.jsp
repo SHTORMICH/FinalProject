@@ -25,7 +25,8 @@
         <option value="ru" ${language == 'ru' ? 'selected' : ''}>Ru</option>
     </select>
 </form>
-<h1>Users</h1>
+<fmt:message key="manager.users.user" var="user"/>
+<h1>${user}</h1>
 <fmt:message key="manager.users.logout" var="logout"/>
 <a href="${pageContext.request.contextPath}/logout">${logout}</a>
 <fmt:message key="manager.users.user_requests" var="user_requests"/>

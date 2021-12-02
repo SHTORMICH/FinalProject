@@ -74,9 +74,41 @@ public class ImpRequestDAO implements RequestDAO {
         return size;
     }
 
-    public int countAllRequestForUser(String login) {
+    public int countAllRequestForUser(String login, String master, String compilationStatus, String paymentStatus) {
         int size = 0;
-        try (PreparedStatement ps = connection.prepareStatement(COUNT_ALL_REQUESTS)){
+        StringBuilder query = new StringBuilder();
+        query.append(COUNT_ALL_REQUESTS_BY_LOGIN);
+        if (login != null || master != null && !master.equals("") ||
+                compilationStatus != null && !compilationStatus.equals("") ||
+                paymentStatus != null && !paymentStatus.equals("")) {
+            query.append(" WHERE");
+            if (login != null) {
+                query.append(" user_login=")
+                        .append("\'")
+                        .append(login)
+                        .append("\'");
+            }
+            if (login != null && master != null && !master.equals("")) {
+                query.append(" AND");
+            }
+            if (master != null && !master.equals("")) {
+                query.append(" master=")
+                        .append("\'")
+                        .append(master)
+                        .append("\'");
+            }
+            if (compilationStatus != null && !compilationStatus.equals("")) {
+                query.append(" AND")
+                        .append(" compilation_status_id=")
+                        .append(Integer.parseInt(compilationStatus.replaceAll("\\s+","")));
+            }
+            if (paymentStatus != null && !paymentStatus.equals("")) {
+                query.append(" AND")
+                        .append(" payment_status_id=")
+                        .append(Integer.parseInt(paymentStatus.replaceAll("\\s+","")));
+            }
+        }
+        try (PreparedStatement ps = connection.prepareStatement(query.toString())){
             try (ResultSet rs = ps.executeQuery()){
                 rs.next();
                 size = rs.getInt(1);
@@ -278,7 +310,7 @@ public class ImpRequestDAO implements RequestDAO {
     public static void main(String[] args) {
         ImpRequestDAO requestDAO = new ImpRequestDAO();
         StringBuilder result = new StringBuilder();
-        List<Request> requestList = requestDAO.getAllUsersRequestFilter(null,null, null, null, null, null, 3, 3);
+        /*List<Request> requestList = requestDAO.getAllUsersRequestFilter(null,null, null, null, null, null, 3, 3);
         for (Request el:requestList) {
             result.append(el.getId())
                     .append(" ")
@@ -294,7 +326,7 @@ public class ImpRequestDAO implements RequestDAO {
                     .append(" ")
                     .append(el.getDate())
                     .append(System.lineSeparator());
-        }
-        System.out.println(result);
+        }*/
+        System.out.println(requestDAO.countAllRequestForUser("Sashok", "MasterOne", "2", "3"));
     }
 }

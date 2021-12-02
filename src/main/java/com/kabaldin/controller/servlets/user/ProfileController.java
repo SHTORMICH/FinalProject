@@ -23,6 +23,8 @@ public class ProfileController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        HttpSession session = req.getSession();
+        String login = (String) session.getAttribute(LOGIN);
         String language = req.getParameter("language");
         String column = req.getParameter("column");
         String sortType = req.getParameter("sortType");
@@ -32,9 +34,7 @@ public class ProfileController extends HttpServlet {
         String nameOfMasterFilter = req.getParameter("mastersFilter");
         String compilationStatusFilter = req.getParameter("compilationStatusFilter");
         String paymentStatusFilter = req.getParameter("paymentStatusFilter");
-        int amountRequestsInDB = ImpRequestDAO.getInstance().countAllRequest();
-        HttpSession session = req.getSession();
-        String login = (String) session.getAttribute(LOGIN);
+        int amountRequestsInDB = ImpRequestDAO.getInstance().countAllRequestForUser(login, nameOfMasterFilter, compilationStatusFilter, paymentStatusFilter);
         User user = ImpUserDAO.getInstance().getUserByLogin(login);
 
         if (prev != 0 && offset - prev >= 0) {
@@ -42,7 +42,6 @@ public class ProfileController extends HttpServlet {
         } else if (next != 0 && offset + next < amountRequestsInDB) {
             offset += next;
         }
-
 
         List<Request> userRequests = ImpRequestDAO.getInstance().getAllUsersRequestFilter(login, column, sortType, nameOfMasterFilter, compilationStatusFilter, paymentStatusFilter, 3, offset);
         Map<String, String> masterNames = ImpUserDAO.getInstance().getAllMasters();

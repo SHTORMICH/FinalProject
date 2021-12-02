@@ -3,8 +3,6 @@ j
 :src/main/java/com/kabaldin/controller/DAO/entity/Role.java,b\2\b270a65a24d68ff3c3a3807f9c324490d036a10f
 n
 >src/main/java/com/kabaldin/controller/DAO/entity/Feedback.java,a\b\ab71927f930b2f91b9798bc266047a7da462d7c3
-O
-src/main/webapp/WEB-INF/web.xml,2\e\2e22b6edd746fa3dc40ad7276c87c8d87d72a392
 s
 Csrc/main/java/com/kabaldin/controller/servlets/LoginController.java,6\5\65459568b47c355d3379cc701513438e2290b60b
 €
@@ -23,8 +21,6 @@ m
 =src/main/java/com/kabaldin/controller/DAO/entity/Request.java,4\b\4bf96e650465945914344d446fad4940d79e4d20
 €
 Psrc/main/java/com/kabaldin/controller/servlets/manager/DeleteUserController.java,2\8\28923cbc5bd6de00eb0bd2df9614437ea0669161
-\
-,.idea/inspectionProfiles/Project_Default.xml,4\9\496a238a6afa168dbaf6efd37bb459331589579c
 ‚
 Rsrc/main/java/com/kabaldin/controller/servlets/master/ChooseRequestController.java,4\1\4159b75ce01b9d0d4fec06aa6f916680727b36d3
 „
@@ -53,15 +49,51 @@ p
 @src/main/java/com/kabaldin/controller/DAO/ImpDAO/ImpUserDAO.java,c\b\cb417b3b7b63c8056dab00959df6073d532dd345
 o
 ?src/main/java/com/kabaldin/controller/DAO/PaymentStatusDAO.java,5\c\5c5c6bdd1092aef35bb5a018f5028e26ff2baf1a
-7
-pom.xml,4\4\442292b8a7efeabbe4cc176709b833b1792140ec
-i
-9src/main/java/com/kabaldin/controller/DAO/RequestDAO.java,c\7\c7f4f6af2a5efcf989fe12c348c5acbf7eb0fdca
 f
 6src/main/java/com/kabaldin/controller/DAO/RoleDAO.java,2\7\27abebcb309ab138254d633e88ad85e8d3bc6c97
-m
-=src/main/java/com/kabaldin/controller/DAO/query/SQLQuery.java,d\9\d9d19647bd97a7e622ff2b6d22a8ce2ecd6b6057
 x
 Hsrc/main/java/com/kabaldin/controller/DAO/connection/ConnectionPool.java,f\9\f9a4f2200dbd8bd4db95e9a6a012b232e3b1a763
 t
 Dsrc/main/java/com/kabaldin/controller/servlets/LogOutController.java,0\5\058e2336e2405795e201fc955bcb642b38aa1b90
+P
+ src/main/webapp/user/account.jsp,c\2\c2f11da6db309b3bb15c855e7fe5e1edcff73b53
+[
++src/main/webapp/user/change_description.jsp,3\a\3aeb6e3e8e80388b1f0b5a80554e6f0e21a664d3
+„
+Tsrc/main/java/com/kabaldin/controller/servlets/user/ChangeDescriptionController.java,9\d\9d27028475e2ea6d8ec98e44278a06ecd1f3ccd3
+…
+Usrc/main/java/com/kabaldin/controller/servlets/manager/ChangeTotalCostController.java,3\2\32f51e409f245324106b1c581890755aab50a142
+‡
+Wsrc/main/java/com/kabaldin/controller/servlets/manager/ChangeUserAccountController.java,4\b\4b3d9dd1b7ea646145eae88bc51cc37c9ea8fa2a
+€
+Psrc/main/java/com/kabaldin/controller/servlets/user/CreateRequestController.java,f\a\fac1b4f83144227b847d71bd3d7572de0f48c040
+p
+@src/main/java/com/kabaldin/controller/filter/EncodingFilter.java,7\c\7cb39abd97b2912a04a33f81d14d3740237eddef
+Q
+!src/main/webapp/user/feedback.jsp,2\8\28d1b746f831a8c0704f724b57930b2081ebeee1
+‚
+Rsrc/main/java/com/kabaldin/controller/servlets/user/IncreaseAccountController.java,d\4\d4a9243ca401aa77138339b624327a62071a02d1
+€
+Psrc/main/java/com/kabaldin/controller/servlets/user/LeaveFeedbackController.java,c\8\c8d854c3e8e21e98c2fe03b508cfb267f36301c6
+s
+Csrc/main/java/com/kabaldin/controller/servlets/LogInController.java,9\9\99a16d94e87c817377fcd561f47101968689f3fa
+z
+Jsrc/main/java/com/kabaldin/controller/servlets/RegistrationController.java,d\7\d760cb14a7754d02ca4082fa9658068b573a671d
+P
+ src/main/webapp/user/request.jsp,8\2\8220f56df6d4ac634d42151df39cb67ce5b58465
+„
+Tsrc/main/java/com/kabaldin/controller/servlets/master/TableOfRequestsController.java,8\9\892cfa309ddac4574f3237ce1f33248deaf6280b
+V
+&src/main/webapp/manager/total_cost.jsp,c\a\ca28691ed2206f9a2884e5310fd8ebf8e83753d9
+X
+(src/main/webapp/manager/user_account.jsp,1\9\19200896d9c06d4686423ed80d5f7f92e8ffc189
+O
+src/main/webapp/WEB-INF/web.xml,2\e\2e22b6edd746fa3dc40ad7276c87c8d87d72a392
+P
+ src/main/webapp/registration.jsp,d\d\dd51f7041d5a8d7bb17c79a85099a350e198ae09
+I
+src/main/webapp/login.jsp,8\5\85ee523d01e5e19376db640e846c91bbcb0a1c22
+7
+pom.xml,4\4\442292b8a7efeabbe4cc176709b833b1792140ec
+{
+Ksrc/main/java/com/kabaldin/controller/servlets/manager/UsersController.java,5\e\5e3a50cc8c5cff7704b2a79f09d0cab5699f0ff3

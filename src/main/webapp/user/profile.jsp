@@ -15,8 +15,8 @@
 
 <html>
 <head>
-    <fmt:message key="user.header" var="header"/>
-    <title>${header}</title>
+    <fmt:message key="user.head" var="head"/>
+    <title>${head}</title>
 </head>
 <%--User info--%>
 <body>
@@ -26,7 +26,8 @@
         <option value="ru" ${language == 'ru' ? 'selected' : ''}>Ru</option>
     </select>
 </form>
-<a href="${pageContext.request.contextPath}/logout">LogOut</a>
+<fmt:message key="user.logOut" var="logOut"/>
+<a href="${pageContext.request.contextPath}/logout">${logOut}</a>
 <fmt:message key="user.your_profile" var="your_profile"/>
 <h1>${your_profile}</h1>
 <fmt:message key="user.firstName" var="firstName"/>
@@ -39,10 +40,10 @@
 <p>${email}: <c:out value="${user.email}"/></p>
 <fmt:message key="user.phoneNumber" var="phoneNumber"/>
 <p>${phoneNumber}: <c:out value="${user.phoneNumber}"/></p>
-<fmt:message key="user.account" var="account"/>
-<p>${account}: <c:out value="${user.account}"/>
-    <fmt:message key="user.top_up_account" var="top_up_account"/>
-    <a href="${pageContext.request.contextPath}/user/account">${top_up_account}</a></p>
+<fmt:message key="user.accounts" var="accounts"/>
+<p>${accounts}: <c:out value="${user.account}"/></p>
+<fmt:message key="user.top_up_account" var="top_up_account"/>
+<a href="${pageContext.request.contextPath}/user/account">${top_up_account}</a>
 
 <fmt:message key="user.your_requests" var="your_requests"/>
 <h1>${your_requests}</h1>
@@ -150,8 +151,6 @@
                 <button>${total_cost}</button>
             </td>
         </form>
-        <fmt:message key="user.user" var="user"/>
-        <td>${user}</td>
         <fmt:message key="user.work_status" var="work_status"/>
         <td>${work_status}</td>
         <fmt:message key="user.payment_status" var="payment_status"/>

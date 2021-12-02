@@ -24,6 +24,7 @@ public abstract class SQLQuery {
         public static final String SELECT_ALL_REQUESTS_FOR_MASTER = "SELECT * FROM request WHERE master=? OR master='Not assigned';";
         public static final String SELECT_ALL_REQUESTS_BY_COLUMN_CLAUSE = "SELECT * FROM request ORDER BY ";
         public static final String COUNT_ALL_REQUESTS = "SELECT COUNT(id) FROM request;";
+        public static final String COUNT_ALL_REQUESTS_BY_LOGIN = "SELECT COUNT(id) FROM request ";
         public static final String UPDATE_COMPILATION_STATUS = "UPDATE request SET compilation_status_id=? WHERE id=?;";
         public static final String UPDATE_PAYMENT_STATUS = "UPDATE request SET payment_status_id=? WHERE id=?;";
         public static final String UPDATE_PAYMENT_STATUS_TO_PAID = "UPDATE request SET payment_status_id=2 WHERE id=?;";

@@ -27,8 +27,11 @@
 </form>
 <fmt:message key="manager.users_requests.headUR" var="headUR"/>
 <h1>${headUR}</h1>
-<p><a href="${pageContext.request.contextPath}/logout">LogOut</a></p>
-<p><a href="${pageContext.request.contextPath}/manager/users">Users</a></p>
+<fmt:message key="manager.users_requests.logout" var="logout"/>
+<p><a href="${pageContext.request.contextPath}/logout">${logout}</a></p>
+<fmt:message key="manager.users_requests.users" var="users"/>
+<p><a href="${pageContext.request.contextPath}/manager/users">${users}</a></p>
+
 <%--Request table filters--%>
 <table>
     <form action="${pageContext.request.contextPath}/manager/users/requests" method="get">

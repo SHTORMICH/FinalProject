@@ -16,7 +16,7 @@ public interface RequestDAO {
 
     public int countAllRequest();
 
-    public int countAllRequestForUser(String login);
+    public int countAllRequestForUser(String login, String master, String compilationStatus, String paymentStatus);
 
     public List<Request> getAllUsersRequest();
 
